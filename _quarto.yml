@@ -5,8 +5,8 @@ website:
   title: "ISSS608 VAA Project"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
+      - text: "Home"
+        href: "index.html"
       - text: "Project Proposal"
         href: "project_proposal.html"
         
