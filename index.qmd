@@ -3,3 +3,11 @@ title: "ISSS608 VAA Project"
 ---
 
 This is a Quarto website that will be used for ISSS608 Visual Analytics and Applications Project.
+
+Team Members:
+
+-   Tao Meizhu (Victoria)
+
+-   Yin Hang
+
+-   Bhairavi Vairavelu
