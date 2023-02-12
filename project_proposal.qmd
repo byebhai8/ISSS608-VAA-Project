@@ -8,41 +8,79 @@ This page contains our project proposal.
 
 # 1. Overview
 
-Sample: "In this project, our team will try on building web-enabled visual analytics application by using R Shiny. The project aims to democratize data and analytics. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization."
+In this project, our team, Group 8, will be building a web-enabled visual analytics platform using R Shiny application. The aim of this project is to provide key insights using the data we have gathered and cleansed, allowing the user to draw meaningful conclusions from our visualizations.
 
 # 2. Project Topic
 
-The topic that this team has chosen for the project
+The tourism sector in Singapore has been impacted by the COVID-19 pandemic significantly, leading to a decline in tourist arrivals and a shift in travel patterns. "A sustainable tourism is something that is becoming increasingly important in the next 10 years", said Mr. Christopher Khoo, the managing director for international tourism consultancy Master Consult Services. An important question to address is how to better understand the challenges the tourism industry face so that we can implement specific measures when planning and managing tourism in Singapore. Without such measures, Singapore's tourism could face numerous negative impacts that may affect their sustainability and competitiveness on the global market, such as the impact by COVID-19, increased traffic congestion, and conflicts between visitors and hosts (hotels).
+
+Our aim is to visualize and analyse historical data and provide a predictive model with accuracy, which will help the tourism sector and stakeholders to draw insights easily, take actions quickly and gain advantages in terms of sustainability and competitiveness in a very competitive global tourism industry when the world just sprung back into a more vibrant sector.
 
 # 3. Motivation
 
-The motivation to choose this topic for the project.
+Tourism industry plays a significant part in the economy of Singapore, contributing to employment, foreign exchange earnings as well as overall economic growth. However, the number of international tourist arrivals in Singapore dropped sharply with the onset of the COVID-19 pandemic. The number gradually bounced back in 2022. Despite the significant annual increase, international tourism arrivals in Singapore remained below pre-pandemic levels, totaling at approximately 63 million in 2022. It became critical on how to forecast the number of tourists based on the given historical time-series data and multiple factors.
 
-What questions do we want to answer with this project?
+In this project, we will visualize and analyse the International Visitor Arrivals by Inbound Tourism Markets dataset, and build an interactive R Shiny application for forecasting of the next 10 years. Singapore tourism sectors can draw insights and take actions based on the insights they gain from the R Shiny application and the Quarto website that we are developing.
 
 # 4. Related Work
 
-What work has been done so far in this topic?
+Previous studies have built visualizations of the tourism sector in Singapore using various methods, including Tableau dashboard and static charts. However, there has been limited research on visual analysis of the sector, especially time series forecasting. This would be the main focus topic of our project.
+
+Time series forecasting is part of predictive analytics. It can show likely changes in the data, such as seasonality and cyclic behaviors, which provide a better understanding of data variables and helps forecast better. A model based on deep learning with time series imaging is proposed. The model consists of three parts: sequence image generation, image feature extraction, and model training.
 
 # 5. Dataset
 
-The dataset that we will be using for this project.
+The dataset that will be used for this project is from: [https://www.singstat.gov.sg/](https://www.singstat.gov.sg/find-data/search-by-theme/industry/tourism/latest-data)
 
 ![](images/proposal_01.png)
 
-xxx
+Once downloaded, this single Excel file contains the following sheets: Content, T1, T2 and T3. The sheet Content basically describes the information that is captured in the different sheets in the Excel file.
+
+The following is a snapshot of the sheet T1, which contains information about the monthly international visitor arrivals grouped by the inbound tourism market.
 
 ![](images/proposal_02.png)
 
-xxx
+In this sheet, we have the following information:
+
+-   The data series column captures
+
+    -   The total international visitor arrivals
+
+    -   The regions and countries the visitors arrived from
+
+-   The remaining columns represent the month and year of the data
+
+The following is a snapshot of the sheet T2, which contains information about the monthly international visitor arrivals grouped by their gender and age group.
 
 ![](images/proposal_03.png)
 
-xxx
+In this sheet, we have the following information:
+
+-   The data series column captures
+
+    -   The total international visitor arrivals
+
+    -   The gender of the visitors
+
+    -   The age group of the visitors
+
+-   The remaining columns represent the month and year of the data
+
+The following is a snapshot of the sheet T3, which contains information about the monthly international visitor arrivals grouped by their length of stay.
 
 ![](images/proposal_04.png)
 
-xxx
+In this sheet, we have the following information:
+
+-   The data series column captures
+
+    -   The total international visitor arrivals
+
+    -   The length of stay of the visitors
+
+    -   The average length of stay of the visitors
+
+-   The remaining columns represent the month and year of the data
 
 # 6. Possible Approach
 

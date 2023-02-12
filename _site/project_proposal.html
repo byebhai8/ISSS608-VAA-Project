@@ -65,7 +65,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -102,11 +102,10 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -126,9 +125,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#timeline-work-allocation" id="toc-timeline-work-allocation" class="nav-link" data-scroll-target="#timeline-work-allocation">9. Timeline &amp; Work Allocation</a></li>
   </ul>
 </nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -162,32 +164,63 @@ ul.task-list li input[type="checkbox"] {
 <p>This page contains our project proposal.</p>
 <section id="overview" class="level1">
 <h1>1. Overview</h1>
-<p>Sample: “In this project, our team will try on building web-enabled visual analytics application by using R Shiny. The project aims to democratize data and analytics. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization.”</p>
+<p>In this project, our team, Group 8, will be building a web-enabled visual analytics platform using R Shiny application. The aim of this project is to provide key insights using the data we have gathered and cleansed, allowing the user to draw meaningful conclusions from our visualizations.</p>
 </section>
 <section id="project-topic" class="level1">
 <h1>2. Project Topic</h1>
-<p>The topic that this team has chosen for the project</p>
+<p>The tourism sector in Singapore has been impacted by the COVID-19 pandemic significantly, leading to a decline in tourist arrivals and a shift in travel patterns. “A sustainable tourism is something that is becoming increasingly important in the next 10 years”, said Mr.&nbsp;Christopher Khoo, the managing director for international tourism consultancy Master Consult Services. An important question to address is how to better understand the challenges the tourism industry face so that we can implement specific measures when planning and managing tourism in Singapore. Without such measures, Singapore’s tourism could face numerous negative impacts that may affect their sustainability and competitiveness on the global market, such as the impact by COVID-19, increased traffic congestion, and conflicts between visitors and hosts (hotels).</p>
+<p>Our aim is to visualize and analyse historical data and provide a predictive model with accuracy, which will help the tourism sector and stakeholders to draw insights easily, take actions quickly and gain advantages in terms of sustainability and competitiveness in a very competitive global tourism industry when the world just sprung back into a more vibrant sector.</p>
 </section>
 <section id="motivation" class="level1">
 <h1>3. Motivation</h1>
-<p>The motivation to choose this topic for the project.</p>
-<p>What questions do we want to answer with this project?</p>
+<p>Tourism industry plays a significant part in the economy of Singapore, contributing to employment, foreign exchange earnings as well as overall economic growth. However, the number of international tourist arrivals in Singapore dropped sharply with the onset of the COVID-19 pandemic. The number gradually bounced back in 2022. Despite the significant annual increase, international tourism arrivals in Singapore remained below pre-pandemic levels, totaling at approximately 63 million in 2022. It became critical on how to forecast the number of tourists based on the given historical time-series data and multiple factors.</p>
+<p>In this project, we will visualize and analyse the International Visitor Arrivals by Inbound Tourism Markets dataset, and build an interactive R Shiny application for forecasting of the next 10 years. Singapore tourism sectors can draw insights and take actions based on the insights they gain from the R Shiny application and the Quarto website that we are developing.</p>
 </section>
 <section id="related-work" class="level1">
 <h1>4. Related Work</h1>
-<p>What work has been done so far in this topic?</p>
+<p>Previous studies have built visualizations of the tourism sector in Singapore using various methods, including Tableau dashboard and static charts. However, there has been limited research on visual analysis of the sector, especially time series forecasting. This would be the main focus topic of our project.</p>
+<p>Time series forecasting is part of predictive analytics. It can show likely changes in the data, such as seasonality and cyclic behaviors, which provide a better understanding of data variables and helps forecast better. A model based on deep learning with time series imaging is proposed. The model consists of three parts: sequence image generation, image feature extraction, and model training.</p>
 </section>
 <section id="dataset" class="level1">
 <h1>5. Dataset</h1>
-<p>The dataset that we will be using for this project.</p>
+<p>The dataset that will be used for this project is from: <a href="https://www.singstat.gov.sg/find-data/search-by-theme/industry/tourism/latest-data">https://www.singstat.gov.sg/</a></p>
 <p><img src="images/proposal_01.png" class="img-fluid"></p>
-<p>xxx</p>
+<p>Once downloaded, this single Excel file contains the following sheets: Content, T1, T2 and T3. The sheet Content basically describes the information that is captured in the different sheets in the Excel file.</p>
+<p>The following is a snapshot of the sheet T1, which contains information about the monthly international visitor arrivals grouped by the inbound tourism market.</p>
 <p><img src="images/proposal_02.png" class="img-fluid"></p>
-<p>xxx</p>
+<p>In this sheet, we have the following information:</p>
+<ul>
+<li><p>The data series column captures</p>
+<ul>
+<li><p>The total international visitor arrivals</p></li>
+<li><p>The regions and countries the visitors arrived from</p></li>
+</ul></li>
+<li><p>The remaining columns represent the month and year of the data</p></li>
+</ul>
+<p>The following is a snapshot of the sheet T2, which contains information about the monthly international visitor arrivals grouped by their gender and age group.</p>
 <p><img src="images/proposal_03.png" class="img-fluid"></p>
-<p>xxx</p>
+<p>In this sheet, we have the following information:</p>
+<ul>
+<li><p>The data series column captures</p>
+<ul>
+<li><p>The total international visitor arrivals</p></li>
+<li><p>The gender of the visitors</p></li>
+<li><p>The age group of the visitors</p></li>
+</ul></li>
+<li><p>The remaining columns represent the month and year of the data</p></li>
+</ul>
+<p>The following is a snapshot of the sheet T3, which contains information about the monthly international visitor arrivals grouped by their length of stay.</p>
 <p><img src="images/proposal_04.png" class="img-fluid"></p>
-<p>xxx</p>
+<p>In this sheet, we have the following information:</p>
+<ul>
+<li><p>The data series column captures</p>
+<ul>
+<li><p>The total international visitor arrivals</p></li>
+<li><p>The length of stay of the visitors</p></li>
+<li><p>The average length of stay of the visitors</p></li>
+</ul></li>
+<li><p>The remaining columns represent the month and year of the data</p></li>
+</ul>
 </section>
 <section id="possible-approach" class="level1">
 <h1>6. Possible Approach</h1>
