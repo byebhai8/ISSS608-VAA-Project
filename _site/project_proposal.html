@@ -164,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
 <p>This page contains our project proposal.</p>
 <section id="overview" class="level1">
 <h1>1. Overview</h1>
-<p>In this project, our team, Group 8, will be building a web-enabled visual analytics platform using R Shiny application. The aim of this project is to provide key insights using the data we have gathered and cleansed, allowing the user to draw meaningful conclusions from our visualizations.</p>
+<p>In this project, our team, Group 10, will be building a web-enabled visual analytics platform using R Shiny application. The aim of this project is to provide key insights using the data we have gathered and cleansed, allowing the user to draw meaningful conclusions from our visualizations.</p>
 </section>
 <section id="project-topic" class="level1">
 <h1>2. Project Topic</h1>
@@ -224,43 +224,119 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="possible-approach" class="level1">
 <h1>6. Possible Approach</h1>
-<p>What are the issues we might encounter and how do we intend to tackle them?</p>
+<p>The dataset will be cleansed, processed, and transformed into a suitable format for visual analysis. This analysis will be performed using various R packages. The analysis will mainly focus on the following aspects:</p>
+<ul>
+<li>Key insights into visitor arrivals in Singapore such as where they are from, their gender, age group and their length of stay in Singapore</li>
+<li>Trends in visitor arrivals in Singapore, before and after the COVID-19 pandemic.</li>
+<li>Forecasting of visitor arrivals for the next 1 to 10 years</li>
+</ul>
+<p>The results of the visual analysis will be presented in the form of interactive charts in a R Shiny application. The insights generated will be useful for stakeholders in the tourism and hotel industries, as well as policymakers and researchers, in understanding the trends and challenges facing the tourism sector in Singapore.</p>
 </section>
 <section id="storyboard" class="level1">
 <h1>7. Storyboard</h1>
+<p>Our R Shiny application is titled “Visitor Arrival Analysis”. This application contains three sections – Home, Explore and Forecast.</p>
 <section id="home-page" class="level3">
 <h3 class="anchored" data-anchor-id="home-page">Home Page</h3>
-<p>How do we plan to address the questions from #3?</p>
+<p>The following is the storyboard for the Home Page, which also serves as a summary page.</p>
 <p><img src="images/proposal_05.png" class="img-fluid"></p>
+<p>In this home page, the following summary level information will be captured:</p>
+<ul>
+<li><p>Text label to display the total visitor arrivals</p></li>
+<li><p>Text label to display the country most of the visitors are from</p></li>
+<li><p>Text label to display the age range most of the visitor fall into</p></li>
+<li><p>Text label to display the average number of days visitors stayed</p></li>
+</ul>
+<p>These text labels aim to provide quick insights into the visitor arrivals in Singapore. Moreover, these labels will be affected by the following filters:</p>
+<ul>
+<li><p>Slider to control the range of years of data, built using the sliderInput()</p></li>
+<li><p>Multi-select checkbox to control the quarters of data, built using the checkboxGroupInput()</p></li>
+<li><p>Multi-select dropdown box to control the months of data, built using the selectInput()</p></li>
+</ul>
+<p>This home page will also contain a time series line chart to depict the number of visitors across time. This will be built using the tidyverse package (ggplot2) in R, utilizing the geom function of geom_line().</p>
+<p>This chart will be controlled by the Metrics filter which controls the metric that is displayed in the line chart. The metrics in this filter are “By Region”, “By Country”, “By Gender”, “By Age Group” and “By Length of Stay”. This filter will be a single-select dropdown box that is built using the selectInput().</p>
+<p>A submit button, built using actionButton(), is included in this page to allow users to click and refresh the home page to reflect their filter selections.</p>
+<p>The key thing to note for this page is that the metrics filter will only affect the time series line chart. Moreover, this metrics will represent the colour codes in the line chart. Therefore, we have included a section on the right to display the legends based on the metrics chosen by the user.</p>
 </section>
 <section id="explore-page" class="level3">
 <h3 class="anchored" data-anchor-id="explore-page">Explore Page</h3>
+<p>The following is the storyboard for the Explore Page. This page will contain a total of 4 tabs – By Geography, By Gender, By Age Group and By Length of Stay.</p>
 <p><u>By Geography</u></p>
-<p>How do we plan to address the questions from #3?</p>
+<p>The storyboard below is an example of how the By Geography tab will be built.</p>
 <p><img src="images/proposal_06.png" class="img-fluid"></p>
-<p>Mock Up:</p>
+<p>In this explore page, the following filters will be provided to users:</p>
+<ul>
+<li><p>Slider to control the range of years of data, built using the sliderInput()</p></li>
+<li><p>Multi-select checkbox to control the quarters of data, built using the checkboxGroupInput()</p></li>
+<li><p>Multi-select dropdown box to control the months of data, built using the selectInput()</p></li>
+</ul>
+<p>This page will also contain the following charts:</p>
+<ul>
+<li><p>Tree map to depict the number of visitors by region, built using the treemap package in R</p></li>
+<li><p>Bar chart to depict the number of visitors by country, built using the tidyverse package (ggplot2) in R, utilizing the geom function of geom_bar()</p></li>
+</ul>
+<p>In this explore page, users can click on a cell in the tree map to filter the bars displayed in the bar chart. For example, if the user were to click on the cell representing the region of Europe, the bars will be filtered to only display countries which are in the region of Europe, such as France and Belgium.</p>
+<p>A mock up designed using Tableau is shown below:</p>
 <p><img src="images/proposal_07.png" class="img-fluid"></p>
+<p>A submit button, built using actionButton(), will also be included in this page to allow users to click and refresh the explore page to reflect their filter selections.</p>
 <p><u>By Gender</u></p>
-<p>How do we plan to address the questions from #3?</p>
+<p>The storyboard below is another example of how the Explore Page will be built. This storyboard focuses on what elements the By Gender tab will contain.</p>
 <p><img src="images/proposal_08.png" class="img-fluid"></p>
-<p>Mock Up:</p>
+<p>In this explore page, the following filters will be provided to users:</p>
+<ul>
+<li><p>Slider to control the range of years of data, built using the sliderInput()</p></li>
+<li><p>Multi-select checkbox to control the quarters of data, built using the checkboxGroupInput()</p></li>
+<li><p>Multi-select dropdown box to control the months of data, built using the selectInput()</p></li>
+</ul>
+<p>This page will also contain the following charts:</p>
+<ul>
+<li><p>Pie chart to depict the number of visitors by gender across time, built using the tidyverse package (ggplot2) in R, utilizing the geom function of geom_bar() and coord_polar to make it circular to resemble a pie</p>
+<ul>
+<li>An alternative to this would be to use the pie() function that is natively provided in R</li>
+</ul></li>
+<li><p>Stacked Bar chart to depict the number of visitors by gender for the selected period, built using the tidyverse package (ggplot2) in R, utilizing the geom function of geom_col() to show the proportion of data (percentage of total)</p></li>
+</ul>
+<p>A mock up designed using Tableau is shown below:</p>
 <p><img src="images/proposal_09.png" class="img-fluid"></p>
+<p>A submit button, built using actionButton(), will also be included in this page to allow users to click and refresh the explore page to reflect their filter selections.</p>
 </section>
 <section id="forecast-page" class="level3">
 <h3 class="anchored" data-anchor-id="forecast-page">Forecast Page</h3>
-<p>How do we plan to address the questions from #3?</p>
+<p>The following is the storyboard for the Forecast Page.</p>
 <p><img src="images/proposal_10.png" class="img-fluid"></p>
+<p>This page is similar to the summary page, whereby we have the filters for the various data periods, as well as the filters to control the metrics we want to view in the time series line chart. With this metrics filter, the user can forecast the number of visitors based on their chosen metric.</p>
+<p>In this forecast page, however, we modify the year filter. In the summary page, the user will be able to change the range of years they want to view the data for. On the other hand, in the forecast page, they will be given the option to forecast for the next 1 to 10 year range using the sliderInput().</p>
+<p>When user clicks on the submit button, which is built using the actionButton(), users will be able to see an animation that depicts how the number of visitors are predicted to be for the next given number of years. This animation will be built using the gganimate package. Additionally, we will be utilizing the gifski package to convert the animated plot into a GIF format, and the transformr package to smoothly animate the lines in the time series plot.</p>
+<p>To ease the interpretability of this page, we will also include a tabular view below the time series line chart to capture the number of visitors that are forecast for the next given number of years. This will be built using the DT package in R, which provides an interface to the DataTables library that is in JavaScript.</p>
+<p>To summarize, the following R packages will be used in our project:</p>
+<ul>
+<li><p>ggplot2</p></li>
+<li><p>treemap</p></li>
+<li><p>gganimate</p></li>
+<li><p>gifski</p></li>
+<li><p>transformr</p></li>
+<li><p>DT</p></li>
+</ul>
 </section>
 </section>
 <section id="possible-obstacles" class="level1">
 <h1>8. Possible Obstacles</h1>
-<p>xxx</p>
+<p>One of the main obstacles that we are facing is that the dataset is 1 dimensional and cleansed. For instance, we will be unable to match a record of data to two categorical variables. One example is that we will be unable to determine how many visitors in the age group of 15 to 19 years old are male. Due to this limitation, our team is in the midst of requesting for the raw data files from Singapore Tourism Board.</p>
+<p>As we are facing this obstacle, the team is also unable to determine the various analysis that could be done with the raw dataset. Due to not having the raw data and having aggregated data, we are unsure on the possibilities of building analytical visualizations such as scatterplots, boxplots and violin plots.</p>
+<p>Due to this limitation, we intend to rework the storyboard once gaining access to the raw dataset.</p>
+<p>However, keeping in mind that there is a possibility that we are not awarded with the raw dataset, the team has a secondary plan of utilizing additional datasets such as Tourism Receipts and Hotel Statistics to boost up the value of our visual analysis.</p>
+<p>Another obstacle that the team might face is the data wrangling portion of this project. As described in the Dataset section, we have multiple categorical variables in a single column, such as Region and Country. Our team intends to wrangle and transform these variables into a clean and usable format before proceeding to create the various R visualizations. Due to an unfamiliarity with various R packages, the team sees this as an obstacle. However, with research of R documentations, practice of R code and exploration of the various packages, we are certain that we will overcome this.</p>
 </section>
 <section id="timeline-work-allocation" class="level1">
 <h1>9. Timeline &amp; Work Allocation</h1>
-<p>What is the estimated project timeline? Show this using the Gantt chart…</p>
+<p>The following is our Gantt chart for the project timeline:</p>
 <p><img src="images/proposal_11.png" class="img-fluid"></p>
-<p>This concludes the submission for Project Proposal. Thank you!</p>
+<p>The following is the Work Allocation between the project members:</p>
+<ul>
+<li><p>Meizhu: Data Exploration and Forecast Model Building</p></li>
+<li><p>Yin Hang: Netlify Presentation and Animation</p></li>
+<li><p>Bhairavi: R Shiny App Building</p></li>
+</ul>
+<p>This concludes the submission for Group 10’s Project Proposal. Thank you!</p>
 
 
 </section>
