@@ -2,22 +2,22 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "Group 10",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "Team Members\n\nBhairavi Vairavelu\nLinkedIn | GitHub\nTao Meizhu (Victoria)\nLinkedIn | GitHub\nYin Hang\nLinkedIn | GitHub"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "ISSS608 VAA Project",
+    "title": "Visual Analysis of Visitor Arrivals in Singapore",
     "section": "",
-    "text": "This is a Quarto website that will be used for ISSS608 Visual Analytics and Applications Project.\nTeam Members:\n\nTao Meizhu (Victoria)\nYin Hang\nBhairavi Vairavelu"
+    "text": "This is a Quarto website that will be used for ISSS608 Visual Analytics and Applications Project."
   },
   {
     "objectID": "project_proposal.html",
     "href": "project_proposal.html",
     "title": "Project Proposal",
     "section": "",
-    "text": "This page contains our project proposal."
+    "text": "This page contains our project proposal.\n\n1. Overview\nSample: “In this project, our team will try on building web-enabled visual analytics application by using R Shiny. The project aims to democratize data and analytics. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization.”\n\n\n2. Project Topic\nThe topic that this team has chosen for the project\n\n\n3. Motivation\nThe motivation to choose this topic for the project.\nWhat questions do we want to answer with this project?\n\n\n4. Related Work\nWhat work has been done so far in this topic?\n\n\n5. Dataset\nThe dataset that we will be using for this project.\n\nxxx\n\nxxx\n\nxxx\n\nxxx\n\n\n6. Possible Approach\nWhat are the issues we might encounter and how do we intend to tackle them?\n\n\n7. Storyboard\n\nHome Page\nHow do we plan to address the questions from #3?\n\n\n\nExplore Page\nBy Geography\nHow do we plan to address the questions from #3?\n\nMock Up:\n\nBy Gender\nHow do we plan to address the questions from #3?\n\nMock Up:\n\n\n\nForecast Page\nHow do we plan to address the questions from #3?\n\n\n\n\n8. Possible Obstacles\nxxx\n\n\n9. Timeline & Work Allocation\nWhat is the estimated project timeline? Show this using the Gantt chart…\n\nThis concludes the submission for Project Proposal. Thank you!"
   }
 ]

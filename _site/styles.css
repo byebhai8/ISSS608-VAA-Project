@@ -1,1 +1,6 @@
 /* css styles */
+
+$toc-active {
+  font-size: 18pt;
+  font-weight: bold;
+}

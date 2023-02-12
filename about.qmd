@@ -1,9 +1,17 @@
 ---
-title: "About"
+title: "Group 10"
 ---
 
-About this site
+**Team Members**
 
-```{r}
-1 + 1
-```
+-   Bhairavi Vairavelu
+
+    [LinkedIn](https://www.linkedin.com/in/bhairavivairavelu/) \| [GitHub](https://github.com/byebhai8)
+
+-   Tao Meizhu (Victoria)
+
+    [LinkedIn](https://www.linkedin.com/in/meizhu-tao-50b147266/) \| [GitHub](https://github.com/meizhutao)
+
+-   Yin Hang
+
+    [LinkedIn](https://www.linkedin.com/in/hang-yin-5a38b51b7/) \| [GitHub](https://github.com/HG-YN)

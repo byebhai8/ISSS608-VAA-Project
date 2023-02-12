@@ -10,7 +10,8 @@ website:
     right: 
       - href: index.qmd
         text: Home
-      - about.qmd
+      - text: "Group 10"
+        href: about.qmd
 
 format:
   html:

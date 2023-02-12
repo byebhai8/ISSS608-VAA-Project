@@ -1,7 +1,97 @@
 ---
 title: "Project Proposal"
-author: "Tao Meizhu (Victoria), Yin Hang, Bhairavi Vairavelu"
-published: 12 February 2023
+author: "Bhairavi Vairavelu, Tao Meizhu (Victoria), Yin Hang"
+date: "12 February 2023"
 ---
 
 This page contains our project proposal.
+
+# 1. Overview
+
+Sample: "In this project, our team will try on building web-enabled visual analytics application by using R Shiny. The project aims to democratize data and analytics. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization."
+
+# 2. Project Topic
+
+The topic that this team has chosen for the project
+
+# 3. Motivation
+
+The motivation to choose this topic for the project.
+
+What questions do we want to answer with this project?
+
+# 4. Related Work
+
+What work has been done so far in this topic?
+
+# 5. Dataset
+
+The dataset that we will be using for this project.
+
+![](images/proposal_01.png)
+
+xxx
+
+![](images/proposal_02.png)
+
+xxx
+
+![](images/proposal_03.png)
+
+xxx
+
+![](images/proposal_04.png)
+
+xxx
+
+# 6. Possible Approach
+
+What are the issues we might encounter and how do we intend to tackle them?
+
+# 7. Storyboard
+
+### Home Page
+
+How do we plan to address the questions from #3?
+
+![](images/proposal_05.png)
+
+### Explore Page
+
+[By Geography]{.underline}
+
+How do we plan to address the questions from #3?
+
+![](images/proposal_06.png)
+
+Mock Up:
+
+![](images/proposal_07.png)
+
+[By Gender]{.underline}
+
+How do we plan to address the questions from #3?
+
+![](images/proposal_08.png)
+
+Mock Up:
+
+![](images/proposal_09.png)
+
+### Forecast Page
+
+How do we plan to address the questions from #3?
+
+![](images/proposal_10.png)
+
+# 8. Possible Obstacles
+
+xxx
+
+# 9. Timeline & Work Allocation
+
+What is the estimated project timeline? Show this using the Gantt chart...
+
+![](images/proposal_11.png)
+
+This concludes the submission for Project Proposal. Thank you!
