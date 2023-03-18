@@ -1,0 +1,233 @@
+---
+title: "Working Script"
+author: "Bhairavi"
+execute:
+  warning: false
+---
+
+# 1. Load necessary libraries
+
+```{r}
+pacman::p_load(readxl, tidyverse)
+```
+
+# 2. Load the dataset
+
+```{r}
+vaByMarketRaw <- read_excel("outputFile -International Visitor Arrivals.xlsx", sheet = "T1", skip = 10)
+vaByDemoRaw <- read_excel("outputFile -International Visitor Arrivals.xlsx", sheet = "T2", skip = 10)
+vaByStayRaw <- read_excel("outputFile -International Visitor Arrivals.xlsx", sheet = "T3", skip = 9)
+```
+
+# 3. Cleansing the dataset
+
+### 3.1 Tourism Markets file
+
+This file
+
+- contains the international visitor arrivals by inbound tourism markets (monthly)
+- excludes arrivals of Malaysians by land
+- feb 1991 has a sharp decline due to Gulf crisis
+- data for Germany prior to 1991 refers to West Germany only
+- all numbers are counts
+
+The following was done to cleanup the vaByMarketRaw dataframe:
+
+- remove the bottom few rows as they were unnecessary for our visualizations
+- create a new column to assign the value of Region to the respective Countries
+- rename fields and rearrange the columns
+- filter out rows that are not needed anymore
+- pivot date (month-year) and the number of visitors to reduce the number of columns
+
+```{r}
+vaByMarket <- slice(vaByMarketRaw, 2:(62))
+
+colnames(vaByMarket)[1] <- "Data"
+
+vaByMarket$Region <-
+  ifelse(vaByMarket$Data %in% c("Brunei Darussalam", "Indonesia", "Malaysia", "Myanmar", "Philippines", "Thailand", "Vietnam", "Other Markets In Southeast Asia"), "Southeast Asia",
+  ifelse(vaByMarket$Data %in% c("China", "Hong Kong SAR", "Taiwan", "Other Markets In Greater China"), "Greater China",
+  ifelse(vaByMarket$Data %in% c("Japan", "South Korea", "Other Markets In North Asia"), "North Asia",
+  ifelse(vaByMarket$Data %in% c("Bangladesh", "India", "Pakistan", "Sri Lanka", "Other Markets In South Asia"), "South Asia",
+  ifelse(vaByMarket$Data %in% c("Iran", "Israel", "Kuwait", "Saudi Arabia", "United Arab Emirates", "Other Markets In West Asia"), "West Asia",
+  ifelse(vaByMarket$Data %in% c("Canada", "USA", "Other Markets In Americas"), "Americas",
+  ifelse(vaByMarket$Data %in% c("Belgium & Luxembourg", "Denmark", "Finland", "France", "Germany", "Italy", "Netherlands", "Norway", "Rep Of Ireland", "Russian Federation", "Spain", "Sweden", "Switzerland", "United Kingdom", "Other Markets In Europe"), "Europe",
+  ifelse(vaByMarket$Data %in% c("Australia", "New Zealand", "Other Markets In Oceania"), "Oceania",
+  ifelse(vaByMarket$Data %in% c("Egypt", "Mauritius", "South Africa (Rep Of)", "Other Markets In Africa"), "Africa",
+  ifelse(vaByMarket$Data %in% c("Others"), "Others", "NA"
+  ))))))))))
+
+vaByMarket <- vaByMarket %>%
+  select(542, 1, 2:541)
+
+colnames(vaByMarket)[2] <- "Country"
+
+# sapply(vaByMarket, class)
+
+vaByMarket <- vaByMarket %>%
+  mutate_at(vars(-one_of("Region", "Country")), as.numeric) %>%
+  filter(vaByMarket$Region != "NA") %>%
+  pivot_longer(cols = ! c("Region", "Country"), names_to = "Period", values_to = "Visitors") %>%
+  mutate(Period = as.Date(paste(Period, "01"), "%Y %B %d")) %>%
+  mutate(Year = year(Period))
+```
+
+# 4. Preparations for visualizations
+
+to find the total number of visitors (regardless of date range):
+
+```{r}
+totalVisitors <- sum(vaByMarket$Visitors, na.rm = TRUE)
+totalVisitors
+```
+
+to find the min and max year:
+
+```{r}
+minYear <- min(year(vaByMarket$Period))
+minYear
+
+maxYear <- max(year(vaByMarket$Period))
+maxYear
+```
+
+to find the country where most visitors are from:
+
+```{r}
+visitorsByCountry <- vaByMarket %>%
+  group_by(Country) %>%
+  summarize(Visitors = sum(Visitors, na.rm = TRUE))
+  
+visitorsByCountry <- visitorsByCountry[order(visitorsByCountry$Visitors, decreasing = TRUE), ]
+visitorsByCountry
+
+mostFrom <- head(visitorsByCountry$Country, 1)
+mostFrom
+```
+
+to find the number of countries that visited us:
+
+```{r}
+temp <- vaByMarket[vaByMarket$Year >= 1984 & vaByMarket$Year <= 1990, ]
+
+numCountries <- nrow(temp %>%
+    filter(!is.na(Visitors)) %>%
+    count(Country))
+numCountries
+```
+
+# 5. Visualizations
+
+plotting visitors across time chart:
+
+install the timetk package (recommended by Prof Kam)
+
+```{r}
+pacman::p_load(timetk, lubridate, ggplot2, plotly, ggHoriPlot)
+```
+
+Time Series Plot for Overall Trend (timetk)
+
+```{r}
+timeSeriesOverall <- vaByMarket %>%
+  group_by(Period) %>%
+  summarise(Visitors = sum(Visitors, na.rm = TRUE))
+
+timeSeriesOverall %>%
+  plot_time_series(Period, Visitors, .interactive = TRUE)
+```
+
+Cycle Plot for Overall Trend
+TBC, Cycle Plot is not working!!
+
+```{r}
+
+# vaByMarket[is.na(vaByMarket)] = 0
+# 
+# monthAvg <- vaByMarket %>%
+#   mutate(Month = month(Period)) %>%
+#   group_by(Month) %>%
+#   summarise(avgValue = mean(Visitors))
+# 
+# cyclePlot <- vaByMarket %>%
+#   group_by(Period) %>%
+#   summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
+#   mutate(Month = as.character(Period, format = '%b')) %>%
+#   mutate(Visitors = round(Visitors/1000, digits = 0))
+# 
+# figCyclePlot <- ggplot() +
+#   geom_line(data = cyclePlot,
+#             aes(x = as.character(Period, format = '%y'),
+#                 y = Visitors,
+#                 group = Month)) +
+#   geom_hline(aes(yintercept = avgValue),
+#              data = monthAvg,
+#              colour = "red",
+#              size = 0.3) +
+#   labs(x = "Date", y = "No. of Visitors", title = "Overall Trend of Visitor Arrivals by month and year, 1978 to 2022") +
+#   facet_grid(~ factor(Month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))) +
+#   theme_bw()
+# 
+# ggplotly(figCyclePlot)
+
+```
+
+Compare two regions using the Horizon Plot for Regional Trend?
+
+```{r}
+vaByMarket %>%
+  group_by(Period, Region) %>%
+  summarise(Visitors = sum(Visitors)) %>%
+  filter(Region == "South Asia")  %>%
+  ggplot() +
+  geom_horizon(aes(x = Period, y =  Visitors), origin = "midpoint", horizonscale = 6) +
+  facet_grid(Region~.) +
+  scale_fill_hcl(palette = "RdBu") +
+  scale_x_date(expand = c(0,0), date_breaks = "3 year", date_labels = " %b %y") +
+  theme_minimal() +
+  theme(panel.spacing.y = unit(0, "lines"), 
+        strip.text.y = element_text(size = 10, angle = 0, hjust = 0),
+        legend.position = 'none',
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 7),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.border = element_blank())
+```
+
+
+Time Series Plot for Regional Trend (ggplotly)
+
+```{r}
+timeseriesRegion <- vaByMarket %>%
+  group_by(Region, Period) %>%
+  summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
+  mutate(Visitors = round(Visitors/1000, digits = 0))
+
+figTimeseriesRegion <- ggplot(data = timeseriesRegion, aes(x = Period, y = Visitors)) +
+  geom_line(aes(colour = Region)) +
+  labs(x = "Date", y = "No. of Visitors (K)", title = "Overall Trend of Visitor Arrivals by Region, 1978 to 2022") +
+  theme_bw()
+
+ggplotly(figTimeseriesRegion)
+```
+
+Time Series Plot for Country Trend (ggplotly)
+
+```{r}
+timeseriesCountry <- vaByMarket %>%
+  group_by(Country, Period) %>%
+  summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
+  mutate(Visitors = round(Visitors/1000, digits = 0))
+
+figTimeseriesCountry <- ggplot(data = timeseriesCountry, aes(x = Period, y = Visitors)) +
+  geom_line(aes(colour = Country)) +
+  labs(x = "Date", y = "No. of Visitors (K)", title = "Overall Trend of Visitor Arrivals, 1978 to 2022") +
+  theme_bw()
+
+ggplotly(figTimeseriesCountry)
+```
+
+xx
+
