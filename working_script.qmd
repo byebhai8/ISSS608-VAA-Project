@@ -282,7 +282,11 @@ we will modelling using modeltime and parsnip libraries
 Basic Auto ARIMA fitting
 
 ```{r}
-modelFitArima <- arima_reg() %>%
+modelFitArima <- arima_reg(
+  non_seasonal_ar = 2,
+  non_seasonal_differences = 1,
+  non_seasonal_ma = 2
+) %>%
   set_engine("auto_arima") %>%
   fit(value ~ date, training(splits))
 modelFitArima
@@ -495,7 +499,7 @@ forecastPlots <- forecastTable %>%
     size = 0.3
   ) +
   labs(
-    title = ""
+    title = "", y = "No. of Visitors", x = "Year"
   ) +
   theme_bw() +
   theme(legend.position = "none")
