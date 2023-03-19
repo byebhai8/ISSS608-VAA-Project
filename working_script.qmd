@@ -116,6 +116,15 @@ numCountries <- nrow(temp %>%
 numCountries
 ```
 
+to list of regions
+
+```{r}
+listRegions <- unique(vaByMarket$Region)
+listRegions
+```
+
+xx
+
 # 5. Visualizations
 
 plotting visitors across time chart:
@@ -229,5 +238,386 @@ figTimeseriesCountry <- ggplot(data = timeseriesCountry, aes(x = Period, y = Vis
 ggplotly(figTimeseriesCountry)
 ```
 
-xx
+# 5. Forecasting
+
+reference: https://www.r-bloggers.com/2020/06/introducing-modeltime-tidy-time-series-forecasting-using-tidymodels/ 
+
+loading libraries
+
+```{r}
+pacman::p_load(modeltime, kernlab, reactable, tidymodels)
+```
+
+only keep the date and value columns for forecasting
+
+```{r}
+vaByMarketTable <- vaByMarket %>%
+  group_by(Period) %>%
+  summarise(visitors = round(sum(Visitors, na.rm = TRUE))/1000) %>% # converted to thousands
+  set_names(c("date", "value"))
+vaByMarketTable
+```
+
+let's create a train/test set"
+
+```{r}
+splits <- vaByMarketTable %>%
+  time_series_split(
+    assess = "3 years",
+    cumulative = TRUE
+  )
+splits
+```
+
+let's plot the train/test split to visualize the split:
+
+```{r}
+splits %>%
+  tk_time_series_cv_plan() %>%
+  plot_time_series_cv_plan(date, value, .interactive = FALSE)
+```
+
+we will modelling using modeltime and parsnip libraries
+
+Basic Auto ARIMA fitting
+
+```{r}
+modelFitArima <- arima_reg() %>%
+  set_engine("auto_arima") %>%
+  fit(value ~ date, training(splits))
+modelFitArima
+```
+
+Prophet
+
+```{r}
+modelFitProphet <- prophet_reg() %>%
+  set_engine("prophet", yearly.seasonality = TRUE) %>%
+  fit(value ~ date, training(splits))
+modelFitProphet
+```
+
+Machine Learning Models
+- create a pre-processing recipe
+- create model specs
+- use workflow to combine model specs, pre-processing and fit model
+
+Pre-processing Recipe:
+
+```{r}
+recipeSpecs <- recipe(value ~ date, training(splits)) %>%
+  step_timeseries_signature(date) %>%
+  step_dummy(all_nominal())
+
+recipeSpecs %>%
+  prep() %>%
+  juice()
+```
+
+once the recipe is ready, we can set up the machine learning pipelines.
+
+Elastic Net
+
+- we will first build the model
+- next, we will make that model into a fitted workflow
+
+```{r}
+modelSpec_glmnet <- linear_reg(penalty = 0.01, mixture = 0.05) %>%
+  set_engine("glmnet")
+
+workflowFit_glmnet <- workflow() %>%
+  add_model(modelSpec_glmnet) %>%
+  add_recipe(recipeSpecs %>%
+               step_rm(date)) %>%
+  fit(training(splits))
+```
+
+Random Forest
+- similar process as the Elastic Net
+
+```{r}
+modelSpec_rf <- rand_forest(trees = 500, min_n = 50, mode = "regression") %>%
+  set_engine("randomForest")
+
+workflowFit_rf <- workflow() %>%
+  add_model(modelSpec_rf) %>%
+  add_recipe(recipeSpecs %>%
+               step_rm(date)) %>%
+  fit(training(splits))
+```
+
+Adding new models
+- XGBoost
+- SVM
+
+XGBoost:
+
+```{r}
+recipeSpecsParsnip <- recipeSpecs %>%
+  update_role(date, new_role = "ID")
+
+workflowFit_xgboost <- workflow() %>%
+  add_model(
+    boost_tree(
+      trees = 500,
+      min_n = 1,
+      tree_depth = 15,
+      mode = "regression"
+    ) %>%
+      set_engine("xgboost")
+  ) %>%
+  add_recipe(recipeSpecsParsnip) %>%
+  fit(training(splits))
+```
+
+SVM:
+
+```{r}
+workflowFit_svm <- workflow() %>%
+  add_model(
+    svm_rbf(
+      cost = 1,
+      margin = 0.1
+    ) %>%
+      set_engine("kernlab") %>%
+      set_mode("regression")
+  ) %>%
+  add_recipe(recipeSpecsParsnip) %>%
+  fit(training(splits))
+```
+
+New Hybrid Models
+
+- these combine automated algorithms with machine learning
+
+Prophet Boost
+
+- algorithm works by modelling the univariate series using Prophet
+- uses regresses supplied via the preprocessing rrrcipe
+- regresses the prophet residuals with the XGBoost model
+
+```{r}
+modelSpec_prophetBoost <- prophet_boost() %>%
+  set_engine("prophet_xgboost", yearly.seasonality = TRUE)
+
+workflowFit_prophetBoost <- workflow() %>%
+  add_model(modelSpec_prophetBoost) %>%
+  add_recipe(recipeSpecs) %>%
+  fit(training(splits))
+```
+
+ARIMA Boosted:
+
+```{r}
+workflowFit_arimaBoost <- workflow() %>%
+  add_model(
+    arima_boost(
+      non_seasonal_ar = 2,
+      non_seasonal_differences = 1,
+      non_seasonal_ma = 2,
+      trees = 500,
+      min_n = 1,
+      tree_depth = 15
+    ) %>%
+      set_engine("auto_arima_xgboost")
+  ) %>%
+  add_recipe(recipeSpecs) %>%
+  fit(training(splits))
+```
+
+Modeltime Table
+
+- organizes the models with IDs and creates generic descriptions too help us keep track of our models
+
+```{r}
+modelTable <- modeltime_table(
+  modelFitArima,
+  modelFitProphet,
+  workflowFit_glmnet,
+  workflowFit_rf,
+  workflowFit_svm,
+  workflowFit_xgboost,
+  workflowFit_arimaBoost,
+  workflowFit_prophetBoost
+) %>%
+  update_model_description(1, "ARIMA") %>%
+  update_model_description(2, "Prophet") %>%
+  update_model_description(3, "glmNet") %>%
+  update_model_description(4, "Random Forest") %>%
+  update_model_description(5, "SVM") %>%
+  update_model_description(6, "XGBoost") %>%
+  update_model_description(7, "ARIMA Boost") %>%
+  update_model_description(8, "Prophet Boost")
+
+modelTable
+```
+
+Calibration
+
+- model calibration is used to quantify error and estimate confidence intervals
+- two columns will be generated: .type and .calibration_data
+- .calibration_data includes the actual values, fitted values and the residuals for the testing set
+
+```{r}
+calibrationTable <- modelTable %>%
+  modeltime_calibrate(testing(splits))
+
+calibrationTable
+```
+
+Forecast (Testing Set)
+
+- with the calibrated data, we can visualize testing predictions (forecast)
+
+```{r}
+forecastTable <- calibrationTable %>%
+  modeltime_forecast(actual_data = vaByMarketTable)
+
+forecastTable
+```
+
+Plotting the forecasts:
+
+```{r}
+forecastPlots <- forecastTable %>%
+  filter(.model_desc != "ACTUAL") %>%
+  plot_modeltime_forecast(
+    .interactive = FALSE,
+    .facet_vars = .model_desc,
+    .facet_ncol = 4,
+    .facet_scales = "fixed",
+    .legend_show = FALSE
+  ) +
+  geom_line(
+    data = forecastTable %>%
+      filter(.model_desc == "ACTUAL") %>%
+      select(.index, .value),
+    size = 0.3
+  ) +
+  labs(
+    title = ""
+  ) +
+  theme_bw() +
+  theme(legend.position = "none")
+
+ggplotly(forecastPlots)
+
+```
+
+Another way to plot it:
+- scraping this!
+
+```{r}
+# forecastTable %>%
+#   filter(.model_desc != "ACTUAL") %>%
+#   group_by(.model_desc) %>%
+#   plot_time_series(.index, 
+#                    .value, 
+#                    .facet_ncol = 2, 
+#                    .facet_scales = "free", 
+#                    .interactive = TRUE)
+```
+
+Accuracy (Testing Set)
+
+- to calculate the testing accuracy to compare the models
+- need to explore to find out how to interpret this table!
+- scraping this!
+
+```{r}
+# calibrationTable %>%
+#   modeltime_accuracy() %>%
+#   table_modeltime_accuracy(.interactive = FALSE)
+```
+
+Another way to plot accuracy:
+
+```{r}
+accuracyTable <- calibrationTable %>%
+  modeltime_accuracy() %>%
+  select(.model_desc, mae, mape, mase, smape, rmse, rsq) %>%
+  reactable(
+    columns = list(
+      .model_desc = colDef(name = "Model"),
+      mae = colDef(name = "Mean Absolute Error", format = colFormat(digits = 2)),
+      mape = colDef(name = "Mean Absolute Percentage Error", format = colFormat(digits = 2)),
+      mase = colDef(name = "Mean Absolute Scaled Error", format = colFormat(digits = 2)),
+      smape = colDef(name = "Symmetric Mean Absolute Percentage Error", format = colFormat(digits = 2)),
+      rmse = colDef(name = "Root Mean Squared Error", format = colFormat(digits = 2)),
+      rsq = colDef(name = "R-Squared", format = colFormat(digits = 2))
+    ),
+    highlight = TRUE,
+    striped = TRUE,
+    searchable = TRUE,
+    showPageSizeOptions = FALSE
+  )
+
+accuracyTable
+```
+
+Now that we have done forecasting, let's do some refitting:
+
+```{r}
+refitTable <- calibrationTable %>%
+  modeltime_refit(vaByMarketTable) %>%
+  modeltime_forecast(h = "3 years",
+                     actual_data = vaByMarketTable) %>%
+  mutate(.model_desc = str_replace_all(.model_desc, "UPDATE: ARIMA\\(1,1,0\\)\\(2,0,0\\)\\[12\\]", "ARIMA")) %>%
+  mutate(.model_desc = str_replace_all(.model_desc, "W/ XGBOOST ERRORS", "Boost"))
+
+refitTable
+```
+
+Now we will use the refitted data and do forward forecasting:
+
+```{r}
+refitPlots <- refitTable %>%
+  filter(.model_desc != "ACTUAL") %>%
+  plot_modeltime_forecast(
+    .interactive = FALSE,
+    .facet_vars = .model_desc,
+    .facet_ncol = 4,
+    .facet_scales = "fixed",
+    .legend_show = FALSE
+  ) +
+  geom_line(
+    data = forecastTable %>%
+      filter(.model_desc == "ACTUAL") %>%
+      select(.index, .value),
+    size = 0.3
+  ) +
+  labs(
+    title = ""
+  ) +
+  theme_bw() +
+  theme(legend.position = "none")
+
+ggplotly(refitPlots)
+```
+
+Now we have our forecasts and refit + forecasts. Let's plot the residuals now:
+
+```{r}
+residualsTable <- calibrationTable %>%
+  modeltime_residuals()
+
+residualsPlots <- residualsTable %>%
+  plot_modeltime_residuals(
+    .interactive = FALSE,
+    .type = "timeplot",
+    .facet_vars = .model_desc,
+    .facet_ncol = 4,
+    .facet_scales = "fixed"
+  ) +
+  labs(
+    title = "",
+    y = "Residuals"
+  ) +
+  theme_bw() +
+  theme(legend.position = "none")
+
+ggplotly(residualsPlots)
+```
+
+xxx
 
