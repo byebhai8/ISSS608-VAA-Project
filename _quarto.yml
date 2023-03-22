@@ -9,6 +9,8 @@ website:
         href: "project_proposal.html"
       - text: "Working Script"
         href: "working_script.html"
+      - text: "Application"
+        href: "application.html"
     right: 
       - href: index.qmd
         text: Home

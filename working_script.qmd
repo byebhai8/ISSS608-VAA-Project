@@ -116,11 +116,18 @@ numCountries <- nrow(temp %>%
 numCountries
 ```
 
-to list of regions
+to list out regions
 
 ```{r}
 listRegions <- unique(vaByMarket$Region)
 listRegions
+```
+
+to list out countries
+
+```{r}
+listCountry <- unique(vaByMarket$Country)
+listCountry
 ```
 
 xx
@@ -200,11 +207,15 @@ vaByMarketCal <- vaByMarket %>%
 vaByMarketCal <- vaByMarketCal[vaByMarketCal$Year >= minYear & vaByMarketCal$Year <= maxYear, ]
 vaByMarketCal[is.na(vaByMarketCal)] = 0
 
+scaleFUN <- function(x) sprintf("%.0f", x)
+
 figHeatmapPlot <- ggplot(data = vaByMarketCal) +
-  geom_tile(aes(x = Year, y = Month, fill = Visitors)) +
+  geom_tile(aes(x = Month, y = Year, fill = Visitors)) +
   labs(title = paste("Visitor Arrivals by Country, ", minYear, " to ", maxYear)) +
   theme_bw() +
-  scale_y_continuous(breaks = seq_along(month.name), labels = month.abb)
+  theme(legend.position = "none") +
+  scale_x_continuous(breaks = seq_along(month.name), labels = month.abb) +
+  scale_y_continuous(labels = scaleFUN)
 
 ggplotly(figHeatmapPlot)
 ```
