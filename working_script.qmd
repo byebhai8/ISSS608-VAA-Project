@@ -146,6 +146,126 @@ timeSeriesOverall %>%
   plot_time_series(Period, Visitors, .interactive = TRUE)
 ```
 
+Time Series by Country
+
+```{r}
+minYear <- 2018
+maxYear <- 2022
+
+vaByCountry <- vaByMarket %>%
+  filter(Country %in% "Russian Federation")
+vaByCountry <- vaByCountry[vaByCountry$Year >= minYear & vaByCountry$Year <= maxYear, ]
+vaByCountry[is.na(vaByCountry)] = 0
+
+timeSeriesCountry <- vaByCountry %>%
+  group_by(Period) %>%
+  summarise(Visitors = sum(Visitors, na.rm = TRUE))
+
+timeSeriesCountry %>%
+  plot_time_series(Period, Visitors, .interactive = TRUE)
+```
+
+Cycle Plot by Country
+
+```{r}
+countryAvg <- vaByCountry %>%
+  mutate(Month = as.character(Period, format = '%b')) %>%
+  group_by(Month) %>%
+  summarise(avgValue = mean(Visitors)) %>%
+  mutate(avgValue = round(avgValue/1000, digits = 0))
+
+cyclePlot <- vaByCountry %>%
+  group_by(Period) %>%
+  summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
+  mutate(Month = as.character(Period, format = '%b')) %>%
+  mutate(Visitors = round(Visitors/1000, digits = 0))
+
+figCyclePlot <- ggplot() +
+  geom_line(data = cyclePlot, aes(x = Period, y = Visitors, group = Month)) +
+  geom_hline(data = countryAvg, aes(yintercept = avgValue), colour = "red", size = 0.3) +
+  labs(x = "Date", y = "No. of Visitors", title = paste("Visitor Arrivals by Country, ", minYear, " to ", maxYear)) +
+  facet_grid(~ factor(Month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+
+ggplotly(figCyclePlot)
+```
+
+Month/Year Heatmap by Country
+
+```{r}
+vaByMarketCal <- vaByMarket %>%
+  mutate(Month = month(Period)) %>%
+  filter(Country %in% "Russian Federation")
+vaByMarketCal <- vaByMarketCal[vaByMarketCal$Year >= minYear & vaByMarketCal$Year <= maxYear, ]
+vaByMarketCal[is.na(vaByMarketCal)] = 0
+
+figHeatmapPlot <- ggplot(data = vaByMarketCal) +
+  geom_tile(aes(x = Year, y = Month, fill = Visitors)) +
+  labs(title = paste("Visitor Arrivals by Country, ", minYear, " to ", maxYear)) +
+  theme_bw() +
+  scale_y_continuous(breaks = seq_along(month.name), labels = month.abb)
+
+ggplotly(figHeatmapPlot)
+```
+
+Compare two regions using the Horizon Plot for Regional Trend?
+
+```{r}
+vaByMarket %>%
+  group_by(Period, Region) %>%
+  summarise(Visitors = sum(Visitors)) %>%
+  filter(Region == "South Asia")  %>%
+  ggplot() +
+  geom_horizon(aes(x = Period, y =  Visitors), origin = "midpoint", horizonscale = 6) +
+  facet_grid(Region~.) +
+  scale_fill_hcl(palette = "RdBu") +
+  scale_x_date(expand = c(0,0), date_breaks = "3 year", date_labels = " %b %y") +
+  theme_minimal() +
+  theme(panel.spacing.y = unit(0, "lines"), 
+        strip.text.y = element_text(size = 10, angle = 0, hjust = 0),
+        legend.position = 'none',
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 7),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.border = element_blank())
+```
+
+Time Series Plot for Regional Trend (ggplotly)
+
+```{r}
+timeseriesRegion <- vaByMarket %>%
+  group_by(Region, Period) %>%
+  summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
+  mutate(Visitors = round(Visitors/1000, digits = 0))
+
+figTimeseriesRegion <- ggplot(data = timeseriesRegion, aes(x = Period, y = Visitors)) +
+  geom_line(aes(colour = Region)) +
+  labs(x = "Date", y = "No. of Visitors (K)", title = "Overall Trend of Visitor Arrivals by Region, 1978 to 2022") +
+  theme_bw()
+
+ggplotly(figTimeseriesRegion)
+```
+
+Time Series Plot for Country Trend (ggplotly)
+
+```{r}
+timeseriesCountry <- vaByMarket %>%
+  group_by(Country, Period) %>%
+  summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
+  mutate(Visitors = round(Visitors/1000, digits = 0))
+
+figTimeseriesCountry <- ggplot(data = timeseriesCountry, aes(x = Period, y = Visitors)) +
+  geom_line(aes(colour = Country)) +
+  labs(x = "Date", y = "No. of Visitors (K)", title = "Overall Trend of Visitor Arrivals, 1978 to 2022") +
+  theme_bw()
+
+ggplotly(figTimeseriesCountry)
+```
+
+
 Cycle Plot for Overall Trend
 TBC, Cycle Plot is not working!!
 
@@ -179,63 +299,6 @@ TBC, Cycle Plot is not working!!
 # 
 # ggplotly(figCyclePlot)
 
-```
-
-Compare two regions using the Horizon Plot for Regional Trend?
-
-```{r}
-vaByMarket %>%
-  group_by(Period, Region) %>%
-  summarise(Visitors = sum(Visitors)) %>%
-  filter(Region == "South Asia")  %>%
-  ggplot() +
-  geom_horizon(aes(x = Period, y =  Visitors), origin = "midpoint", horizonscale = 6) +
-  facet_grid(Region~.) +
-  scale_fill_hcl(palette = "RdBu") +
-  scale_x_date(expand = c(0,0), date_breaks = "3 year", date_labels = " %b %y") +
-  theme_minimal() +
-  theme(panel.spacing.y = unit(0, "lines"), 
-        strip.text.y = element_text(size = 10, angle = 0, hjust = 0),
-        legend.position = 'none',
-        axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 7),
-        axis.title.y = element_blank(),
-        axis.title.x = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.border = element_blank())
-```
-
-
-Time Series Plot for Regional Trend (ggplotly)
-
-```{r}
-timeseriesRegion <- vaByMarket %>%
-  group_by(Region, Period) %>%
-  summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
-  mutate(Visitors = round(Visitors/1000, digits = 0))
-
-figTimeseriesRegion <- ggplot(data = timeseriesRegion, aes(x = Period, y = Visitors)) +
-  geom_line(aes(colour = Region)) +
-  labs(x = "Date", y = "No. of Visitors (K)", title = "Overall Trend of Visitor Arrivals by Region, 1978 to 2022") +
-  theme_bw()
-
-ggplotly(figTimeseriesRegion)
-```
-
-Time Series Plot for Country Trend (ggplotly)
-
-```{r}
-timeseriesCountry <- vaByMarket %>%
-  group_by(Country, Period) %>%
-  summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
-  mutate(Visitors = round(Visitors/1000, digits = 0))
-
-figTimeseriesCountry <- ggplot(data = timeseriesCountry, aes(x = Period, y = Visitors)) +
-  geom_line(aes(colour = Country)) +
-  labs(x = "Date", y = "No. of Visitors (K)", title = "Overall Trend of Visitor Arrivals, 1978 to 2022") +
-  theme_bw()
-
-ggplotly(figTimeseriesCountry)
 ```
 
 # 5. Forecasting
