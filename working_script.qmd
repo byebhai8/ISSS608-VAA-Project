@@ -19,25 +19,25 @@ vaByDemoRaw <- read_excel("outputFile -International Visitor Arrivals.xlsx", she
 vaByStayRaw <- read_excel("outputFile -International Visitor Arrivals.xlsx", sheet = "T3", skip = 9)
 ```
 
-# 3. Cleansing the dataset
+# 3. Tourism Markets
 
-### 3.1 Tourism Markets file
+### 3.1 Cleansing the dataset
 
 This file
 
-- contains the international visitor arrivals by inbound tourism markets (monthly)
-- excludes arrivals of Malaysians by land
-- feb 1991 has a sharp decline due to Gulf crisis
-- data for Germany prior to 1991 refers to West Germany only
-- all numbers are counts
+-   contains the international visitor arrivals by inbound tourism markets (monthly)
+-   excludes arrivals of Malaysians by land
+-   feb 1991 has a sharp decline due to Gulf crisis
+-   data for Germany prior to 1991 refers to West Germany only
+-   all numbers are counts
 
 The following was done to cleanup the vaByMarketRaw dataframe:
 
-- remove the bottom few rows as they were unnecessary for our visualizations
-- create a new column to assign the value of Region to the respective Countries
-- rename fields and rearrange the columns
-- filter out rows that are not needed anymore
-- pivot date (month-year) and the number of visitors to reduce the number of columns
+-   remove the bottom few rows as they were unnecessary for our visualizations
+-   create a new column to assign the value of Region to the respective Countries
+-   rename fields and rearrange the columns
+-   filter out rows that are not needed anymore
+-   pivot date (month-year) and the number of visitors to reduce the number of columns
 
 ```{r}
 vaByMarket <- slice(vaByMarketRaw, 2:(62))
@@ -72,7 +72,7 @@ vaByMarket <- vaByMarket %>%
   mutate(Year = year(Period))
 ```
 
-# 4. Preparations for visualizations
+### 3.2. Preparations for visualizations
 
 to find the total number of visitors (regardless of date range):
 
@@ -130,16 +130,32 @@ listCountry <- unique(vaByMarket$Country)
 listCountry
 ```
 
-xx
-
-# 5. Visualizations
+### 3.3. Visualizations
 
 plotting visitors across time chart:
 
 install the timetk package (recommended by Prof Kam)
 
 ```{r}
-pacman::p_load(timetk, lubridate, ggplot2, plotly, ggHoriPlot)
+pacman::p_load(timetk, lubridate, ggplot2, plotly, ggHoriPlot, sunburstR, d3r)
+```
+
+Country/Region Sunburst Plot
+
+```{r}
+vaByMarket
+
+country_hier <- vaByMarket %>%
+  group_by(Region, Country) %>%
+  summarize(Visitors = sum(Visitors, na.rm = TRUE))
+
+country_sunburst <- d3_nest(country_hier, value_cols = "Visitors")
+
+sunburst(data = country_sunburst,
+         valueField = "Visitors",
+         height = 300,
+         width = "100%",
+         legend = FALSE) 
 ```
 
 Time Series Plot for Overall Trend (timetk)
@@ -151,6 +167,14 @@ timeSeriesOverall <- vaByMarket %>%
 
 timeSeriesOverall %>%
   plot_time_series(Period, Visitors, .interactive = TRUE)
+```
+
+Boxplot Time Series
+
+```{r}
+timeSeriesOverall %>%
+  plot_time_series(Period, Visitors, .interactive = TRUE)
+
 ```
 
 Time Series by Country
@@ -276,45 +300,9 @@ figTimeseriesCountry <- ggplot(data = timeseriesCountry, aes(x = Period, y = Vis
 ggplotly(figTimeseriesCountry)
 ```
 
+### 3.4. Forecasting
 
-Cycle Plot for Overall Trend
-TBC, Cycle Plot is not working!!
-
-```{r}
-
-# vaByMarket[is.na(vaByMarket)] = 0
-# 
-# monthAvg <- vaByMarket %>%
-#   mutate(Month = month(Period)) %>%
-#   group_by(Month) %>%
-#   summarise(avgValue = mean(Visitors))
-# 
-# cyclePlot <- vaByMarket %>%
-#   group_by(Period) %>%
-#   summarise(Visitors = sum(Visitors, na.rm = TRUE)) %>%
-#   mutate(Month = as.character(Period, format = '%b')) %>%
-#   mutate(Visitors = round(Visitors/1000, digits = 0))
-# 
-# figCyclePlot <- ggplot() +
-#   geom_line(data = cyclePlot,
-#             aes(x = as.character(Period, format = '%y'),
-#                 y = Visitors,
-#                 group = Month)) +
-#   geom_hline(aes(yintercept = avgValue),
-#              data = monthAvg,
-#              colour = "red",
-#              size = 0.3) +
-#   labs(x = "Date", y = "No. of Visitors", title = "Overall Trend of Visitor Arrivals by month and year, 1978 to 2022") +
-#   facet_grid(~ factor(Month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))) +
-#   theme_bw()
-# 
-# ggplotly(figCyclePlot)
-
-```
-
-# 5. Forecasting
-
-reference: https://www.r-bloggers.com/2020/06/introducing-modeltime-tidy-time-series-forecasting-using-tidymodels/ 
+reference: https://www.r-bloggers.com/2020/06/introducing-modeltime-tidy-time-series-forecasting-using-tidymodels/
 
 loading libraries
 
@@ -375,10 +363,7 @@ modelFitProphet <- prophet_reg() %>%
 modelFitProphet
 ```
 
-Machine Learning Models
-- create a pre-processing recipe
-- create model specs
-- use workflow to combine model specs, pre-processing and fit model
+Machine Learning Models - create a pre-processing recipe - create model specs - use workflow to combine model specs, pre-processing and fit model
 
 Pre-processing Recipe:
 
@@ -396,8 +381,8 @@ once the recipe is ready, we can set up the machine learning pipelines.
 
 Elastic Net
 
-- we will first build the model
-- next, we will make that model into a fitted workflow
+-   we will first build the model
+-   next, we will make that model into a fitted workflow
 
 ```{r}
 modelSpec_glmnet <- linear_reg(penalty = 0.01, mixture = 0.05) %>%
@@ -410,8 +395,7 @@ workflowFit_glmnet <- workflow() %>%
   fit(training(splits))
 ```
 
-Random Forest
-- similar process as the Elastic Net
+Random Forest - similar process as the Elastic Net
 
 ```{r}
 modelSpec_rf <- rand_forest(trees = 500, min_n = 50, mode = "regression") %>%
@@ -424,9 +408,7 @@ workflowFit_rf <- workflow() %>%
   fit(training(splits))
 ```
 
-Adding new models
-- XGBoost
-- SVM
+Adding new models - XGBoost - SVM
 
 XGBoost:
 
@@ -466,13 +448,13 @@ workflowFit_svm <- workflow() %>%
 
 New Hybrid Models
 
-- these combine automated algorithms with machine learning
+-   these combine automated algorithms with machine learning
 
 Prophet Boost
 
-- algorithm works by modelling the univariate series using Prophet
-- uses regresses supplied via the preprocessing rrrcipe
-- regresses the prophet residuals with the XGBoost model
+-   algorithm works by modelling the univariate series using Prophet
+-   uses regresses supplied via the preprocessing rrrcipe
+-   regresses the prophet residuals with the XGBoost model
 
 ```{r}
 modelSpec_prophetBoost <- prophet_boost() %>%
@@ -505,7 +487,7 @@ workflowFit_arimaBoost <- workflow() %>%
 
 Modeltime Table
 
-- organizes the models with IDs and creates generic descriptions too help us keep track of our models
+-   organizes the models with IDs and creates generic descriptions too help us keep track of our models
 
 ```{r}
 modelTable <- modeltime_table(
@@ -532,9 +514,9 @@ modelTable
 
 Calibration
 
-- model calibration is used to quantify error and estimate confidence intervals
-- two columns will be generated: .type and .calibration_data
-- .calibration_data includes the actual values, fitted values and the residuals for the testing set
+-   model calibration is used to quantify error and estimate confidence intervals
+-   two columns will be generated: .type and .calibration_data
+-   .calibration_data includes the actual values, fitted values and the residuals for the testing set
 
 ```{r}
 calibrationTable <- modelTable %>%
@@ -545,7 +527,7 @@ calibrationTable
 
 Forecast (Testing Set)
 
-- with the calibrated data, we can visualize testing predictions (forecast)
+-   with the calibrated data, we can visualize testing predictions (forecast)
 
 ```{r}
 forecastTable <- calibrationTable %>%
@@ -580,32 +562,6 @@ forecastPlots <- forecastTable %>%
 
 ggplotly(forecastPlots)
 
-```
-
-Another way to plot it:
-- scraping this!
-
-```{r}
-# forecastTable %>%
-#   filter(.model_desc != "ACTUAL") %>%
-#   group_by(.model_desc) %>%
-#   plot_time_series(.index, 
-#                    .value, 
-#                    .facet_ncol = 2, 
-#                    .facet_scales = "free", 
-#                    .interactive = TRUE)
-```
-
-Accuracy (Testing Set)
-
-- to calculate the testing accuracy to compare the models
-- need to explore to find out how to interpret this table!
-- scraping this!
-
-```{r}
-# calibrationTable %>%
-#   modeltime_accuracy() %>%
-#   table_modeltime_accuracy(.interactive = FALSE)
 ```
 
 Another way to plot accuracy:
@@ -699,3 +655,358 @@ ggplotly(residualsPlots)
 
 xxx
 
+# 4. Visitors' Demographics
+
+### 4.1. Cleansing the dataset
+
+This file
+
+-   contains the international visitor arrivals by gender and age groups (monthly for the last 6 months of dec)
+-   excludes arrivals of Malaysians by land
+-   all numbers are counts
+
+The following was done to cleanup the vaByDemoRaw dataframe:
+
+-   remove the bottom few rows as they were unnecessary for our visualizations
+-   rename fields and rearrange the columns
+-   split the dataframe into two, one to contain info on gender and one to contain info on age
+-   next, we will pivot date (month-year) and the number of visitors to reduce the number of columns
+
+```{r}
+vaByDemo <- slice(vaByDemoRaw, 2:11)
+vaByDemoGender <- slice(vaByDemo, 1:2)
+vaByDemoAge <- slice(vaByDemo, 3:11)
+```
+
+Cleansing Gender dataframe:
+
+```{r}
+colnames(vaByDemoGender)[1] <- "Gender"
+vaByDemoGender <- vaByDemoGender %>%
+  pivot_longer(cols = !c("Gender"), names_to = "Period", values_to = "Visitors") %>%
+  mutate(Period = as.Date(paste(Period, "01"), "%Y %B %d")) %>%
+  mutate(Year = year(Period))
+vaByDemoGender
+```
+
+Cleansing Age dataframe:
+
+```{r}
+colnames(vaByDemoAge)[1] <- "AgeGroup"
+vaByDemoAge <- vaByDemoAge %>%
+  pivot_longer(cols = !c("AgeGroup"), names_to = "Period", values_to = "Visitors") %>%
+  mutate(Period = as.Date(paste(Period, "01"), "%Y %B %d")) %>%
+  mutate(Year = year(Period))
+vaByDemoAge
+```
+
+### 4.2. Preparations for visualizations
+
+To find the age range of most visitors:
+
+```{r}
+visitorsAge <- vaByDemoAge %>%
+  group_by(AgeGroup) %>%
+  summarise(Visitors = sum(Visitors))
+
+visitorsAge <- visitorsAge[order(visitorsAge$Visitors, decreasing = TRUE), ]
+mostAge <- head(visitorsAge$AgeGroup, 1)
+
+mostAge
+```
+
+### 4.3. Visualizations
+
+```{r}
+pacman::p_load(ggplot2, plotly, timetk, ggHoriPlot, ggridges, gganimate)
+```
+
+```{r}
+vaByDemoGender <- vaByDemoGender %>%
+  mutate(Month = month(Period))
+vaByDemoGender
+vaByDemoAge <- vaByDemoAge %>%
+  mutate(Month = month(Period))
+vaByDemoAge
+```
+
+Time Series Plot for Gender
+
+```{r}
+vaByDemoGender %>%
+  plot_time_series(Period, Visitors, .color_var = Gender, .smooth = FALSE, .interactive = TRUE)
+```
+
+Another way to plot time series:
+
+```{r}
+p <- vaByDemoGender %>%
+  ggplot(aes(x = Period, y = Visitors, color = Gender)) +
+  geom_line() +
+  labs(x = "Period", y = "No. Of Visitors", title = NULL) +
+  theme_bw() +
+  theme(axis.text = element_text(size = 7), axis.title = element_text(size = 7), legend.position = "none")
+
+p %>%
+  ggplotly()
+```
+
+Time Series Plot for Age Groups
+
+```{r}
+vaByDemoAge %>%
+  plot_time_series(Period, Visitors, .color_var = AgeGroup, .smooth = FALSE, .interactive = TRUE)
+```
+
+Horizon Plot by Gender
+
+```{r}
+vaByDemoGender %>%
+  group_by(Period, Gender) %>%
+  summarise(Visitors = sum(Visitors)) %>%
+  ggplot() +
+  geom_horizon(aes(x = Period, y =  Visitors), origin = "midpoint", horizonscale = 6) +
+  facet_grid(Gender~.) +
+  scale_fill_hcl(palette = "RdBu") +
+  scale_x_date(expand = c(0,0), date_breaks = "1 month", date_labels = " %b %y") +
+  theme_minimal() +
+  theme(panel.spacing.y = unit(0, "lines"), 
+        strip.text.y = element_text(size = 10, angle = 0, hjust = 0),
+        legend.position = 'none',
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 7),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.border = element_blank())
+```
+
+Horizon Plot by Age Group
+
+```{r}
+vaByDemoAge %>%
+  group_by(Period, AgeGroup) %>%
+  summarise(Visitors = sum(Visitors)) %>%
+  ggplot() +
+  geom_horizon(aes(x = Period, y =  Visitors), origin = "midpoint", horizonscale = 6) +
+  facet_grid(AgeGroup~.) +
+  scale_fill_hcl(palette = "RdBu") +
+  scale_x_date(expand = c(0,0), date_breaks = "1 month", date_labels = " %b %y") +
+  theme_minimal() +
+  theme(panel.spacing.y = unit(0, "lines"), 
+        strip.text.y = element_text(size = 10, angle = 0, hjust = 0),
+        legend.position = 'none',
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 7),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.border = element_blank())
+```
+
+Heatmap by Gender
+
+```{r}
+figHeatmapPlot <- ggplot(data = vaByDemoGender) +
+  geom_tile(aes(x = Month, y = Gender, fill = Visitors)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_x_continuous(breaks = seq_along(month.name), labels = month.abb)
+
+ggplotly(figHeatmapPlot)
+```
+
+Heatmap by Age Group
+
+```{r}
+figHeatmapPlot <- ggplot(data = vaByDemoAge) +
+  geom_tile(aes(x = Month, y = AgeGroup, fill = Visitors)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_x_continuous(breaks = seq_along(month.name), labels = month.abb)
+
+ggplotly(figHeatmapPlot)
+```
+
+xxx
+
+# 5. Visitors' Length of Stay
+
+### 5.1 Cleansing the dataset
+
+This file
+
+-   contains the international visitor arrivals by length of stay (monthly for the last 6 months of dec)
+-   excludes arrivals of Malaysians by land
+-   all numbers are counts
+
+The following was done to cleanup the vaByStayRaw dataframe:
+
+-   remove the bottom few rows as they were unnecessary for our visualizations
+-   rename fields and rearrange the columns
+-   next, we will pivot date (month-year) and the number of visitors to reduce the number of columns
+-   we will also replace all mention of "(Number)" as we do not need this text explicitly stated in our column
+
+```{r}
+vaByStay <- slice(vaByStayRaw, 2:15)
+vaByStay
+```
+
+Cleansing the dataframe:
+
+```{r}
+colnames(vaByStay)[1] <- "Duration"
+vaByStay <- vaByStay %>%
+  pivot_longer(cols = !c("Duration"), names_to = "Period", values_to = "Visitors") %>%
+  mutate(Period = as.Date(paste(Period, "01"), "%Y %B %d")) %>%
+  mutate(Year = year(Period)) %>%
+  mutate(Month = month(Period)) %>%
+  mutate(Duration = str_replace_all(Duration, " \\(Number\\)", ""))
+vaByStay
+```
+
+xxx
+
+### 5.2 Preparations for visualizations
+
+To find the avg days most visitors stayed:
+
+```{r}
+visitorsStayed <- vaByStay %>%
+  group_by(Duration) %>%
+  summarise(Visitors = sum(Visitors))
+
+visitorsStayed <- visitorsStayed[order(visitorsStayed$Visitors, decreasing = TRUE), ]
+mostStayed <- head(visitorsStayed$Duration, 1)
+
+mostStayed
+```
+
+xxx
+
+### 5.3 Visualizations
+
+Time Series Plot for Gender
+
+```{r}
+vaByStay %>%
+  plot_time_series(Period, Visitors, .smooth = FALSE, .color_var = Duration, .interactive = TRUE)
+```
+
+Time Series Boxplot for Length of Stay
+
+```{r}
+vaByStay %>%
+  plot_time_series_boxplot(Period, Visitors, .smooth = FALSE, .period = "1 month", .interactive = TRUE, .title = NULL)
+```
+
+Time Series Analysis of Length of Stay
+
+```{r}
+p <- vaByStay %>%
+  ggplot(aes(x = Period, y = Visitors, color = Duration)) +
+  geom_line() +
+  labs(x = "Period", y = "No. Of Visitors", title = NULL) +
+  theme_bw() +
+  theme(axis.text = element_text(size = 7), axis.title = element_text(size = 7))
+
+p %>%
+  ggplotly()
+```
+
+Ridgeline Plot by Length of Stay
+
+```{r}
+vaByStay %>%
+  ggplot(aes(x = Visitors, y = Duration, fill = after_stat(x))) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
+  scale_fill_viridis_c(name = "Visitors", option = "C") +
+  theme_bw()
+```
+
+```{r}
+pacman::p_load(viridis, hrbrthemes)
+```
+
+Area Chart by Length of Stay
+
+```{r}
+areaChart <- vaByStay %>% 
+  ggplot(aes(x = Period, y = Visitors, fill = Duration)) +
+    geom_area() +
+    scale_fill_viridis(discrete = TRUE) +
+    theme(legend.position="none") +
+    theme_bw() +
+    theme(legend.position="none")
+
+ggplotly(areaChart)
+```
+
+Horizon Plot by Length of Stay
+
+```{r}
+vaByStay %>%
+  group_by(Period, Duration) %>%
+  summarise(Visitors = sum(Visitors)) %>%
+  ggplot() +
+  geom_horizon(aes(x = Period, y =  Visitors), origin = "midpoint", horizonscale = 6) +
+  facet_grid(Duration~.) +
+  scale_fill_hcl(palette = "RdBu") +
+  scale_x_date(expand = c(0,0), date_breaks = "1 month", date_labels = " %b %y") +
+  theme_minimal() +
+  theme(panel.spacing.y = unit(0, "lines"), 
+        strip.text.y = element_text(size = 10, angle = 0, hjust = 0),
+        legend.position = 'none',
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 7),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.border = element_blank())
+```
+
+Heatmap by Length of Stay
+
+```{r}
+figHeatmapLOS <- ggplot(vaByStay) +
+  geom_tile(aes(x = Month, y = Duration, fill = Visitors)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_x_continuous(breaks = seq_along(month.name), labels = month.abb)
+
+ggplotly(figHeatmapLOS)
+```
+
+Using ggTimeSeries
+
+```{r}
+pacman::p_load(ggTimeSeries)
+```
+
+Streamgraph for Length of Stay (doesn't look that nice)
+
+```{r}
+p1 <- vaByStay %>%
+  ggplot(aes(x = Period, y = Visitors, group = Duration, fill = Duration)) +
+  stat_steamgraph()
+ggplotly(p1)
+```
+
+using ggbump
+
+```{r}
+pacman::p_load(ggbump)
+```
+
+Bump Chart for Length of Stay
+
+```{r}
+px <- vaByStay %>% 
+  ggplot(aes(x = Period, y = Visitors, color = Duration)) +
+  geom_bump(size = 1) +
+  geom_point(size = 1.2)
+
+ggplotly(px)
+```
+
+xxx
