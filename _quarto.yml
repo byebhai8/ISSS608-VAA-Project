@@ -2,27 +2,40 @@ project:
   type: website
 
 website:
-  title: "ISSS608 VAA Project"
-  navbar:
-    left:
-      - text: "Project Proposal"
+  page-navigation: false
+  title: "Visitor Arrivals Analysis"
+  site-url: "https://isss608-vaa-project.netlify.app/"
+  repo-url: "https://github.com/byebhai8/ISSS608-VAA-Project"
+  page-footer:
+    right: "ISSS608 VAA Project"
+    left: "Group 10"
+  sidebar:
+    logo: "images/plane_logo_v2.png"
+    pinned: true
+    align: center
+    style: "docked"
+    search: true
+    collapse-level: 1
+    contents: 
+      - text: "Home"
+        href: index.qmd
+      - text: "Project Overview"
         href: "project_proposal.html"
-      - text: "Working Script"
-        href: "working_script.html"
+      - text: "User Guide"
+        href: "user_guide.html"
       - text: "Application"
         href: "application.html"
-    right: 
-      - href: index.qmd
-        text: Home
-      - text: "Group 10"
+      - text: "Poster"
+        href: "poster.html"
+      - text: "About Us"
         href: about.qmd
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: [cosmo, theme.scss]
+    code-copy: true
+    code-overflow: wrap
     toc: true
-    toc-location: left
     page-layout: full
 
 editor: visual
