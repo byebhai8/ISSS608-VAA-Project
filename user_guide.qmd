@@ -50,6 +50,7 @@ xx
 
 This tab can be used to analyze the forecasts that can be carried out on a regional level. This tab contains 8 forecasting models, their accuracy of forecasts, results of the forecast and refitted forecasts, as well as the residuals of these forecasts.
 
+
 ![](images/userguide_06.png)
 
 xx
