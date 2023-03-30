@@ -185,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <ol type="1">
-<li>Start by selecting the year range of the historical data to be explored using the <code>Year Range</code> filter. The default year range is from <code>1978</code> to <code>2022</code>.</li>
+<li>Start by selecting the year range of the historical data to be explored using the <code>Year Range</code> slider. The default year range is from <code>1978</code> to <code>2022</code>.</li>
 <li>Next, choose a region to have a quick look into using the multi-select drop-down filter for <code>Regions</code>. The default selection is <code>All</code> regions. Select <code>None</code> to un-select all options. It is also possible to individually mark the check-boxes of the regions that are to be analyzed.</li>
 </ol>
 <div class="quarto-figure quarto-figure-left">
@@ -199,7 +199,7 @@ ul.task-list li input[type="checkbox"] {
 <p>b. The total number of countries that have visited Singapore</p>
 <p>c. The age range of most visitors that have visited Singapore in 2022</p>
 <p>d. The average length of days most visitors have stayed in Singapore in 2022</p>
-<p>e. The visualization for time series analysis to visualize visitor arrivals across time</p></li>
+<p>e. The visualization of time series analysis for visitor arrivals across time</p></li>
 </ol>
 </section>
 <section id="explore" class="level2">
@@ -214,7 +214,7 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <ol type="1">
-<li>Start by selecting the year range of the historical data to be explored using the <code>Year Range</code> filter. The default year range is from <code>2012</code> to <code>2022</code>.</li>
+<li>Start by selecting the year range of the historical data to be explored using the <code>Year Range</code> slider. The default year range is from <code>2012</code> to <code>2022</code>.</li>
 <li>Next, choose a country to drill down into using the single-select drop-down filter for <code>Country</code>. The default selection is <code>Australia</code>. The filter is sorted in alphabetical order. If a country that you want to analyze is not included in the filter, it would mean that there is no record of a person from that country visiting Singapore.</li>
 </ol>
 <div class="quarto-figure quarto-figure-left">
@@ -224,22 +224,28 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <ol start="3" type="1">
 <li><p>Upon modifications of the filters, the visualizations in the Explore - Tourism Markets tab will be automatically updated:</p>
-<p>a. The total number of visitors, represented in millions, that have arrived in Singapore</p>
-<p>b. The total number of countries that have visited Singapore</p>
-<p>c. The age range of most visitors that have visited Singapore in 2022</p>
-<p>d. The average length of days most visitors have stayed in Singapore in 2022</p>
-<p>e. The visualization for time series analysis to visualize visitor arrivals across time</p></li>
+<p>a. The visualization of cycle plot analysis for visitor arrivals across month and year. The red line indicates the average number of visitors that arrived on a particular month.</p>
+<p>b. The visualization of calendar heatmap analysis to compare the visitor arrivals by month and year. The darker colour indicates a higher number of visitor arrivals while the lighter colour indicates a lower number of visitor arrivals.</p></li>
 </ol>
 </section>
 <section id="demographics" class="level3">
 <h3 class="anchored" data-anchor-id="demographics">Demographics</h3>
-<p>This tab can be used to analyze the age and gender breakdown of the visitors that arrive in Singapore.</p>
+<p>This tab can be used to analyze the age and gender breakdown of the Visitor Arrivals in Singapore..</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/userguide_03.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
-<p>xx</p>
+<ol type="1">
+<li><p>The left panel depicts the analysis by <code>Gender</code> while the right panel depicts the analysis by <code>Age Group</code></p></li>
+<li><p>The visualizations in the Explore - Demographics tab are for the year <code>2022</code>:</p>
+<p>a. The visualization of time series analysis for visitor arrivals by gender</p>
+<p>b. The visualization of heatmap analysis for visitor arrivals by month and gender</p>
+<p>c. The visualization of horizon pot analysis for visitor arrivals by month and gender</p>
+<p>d. The visualization of time series analysis for visitor arrivals by age group</p>
+<p>e. The visualization of heatmap analysis for visitor arrivals by month and age group</p>
+<p>f. The visualization of horizon pot analysis for visitor arrivals by month and age group</p></li>
+</ol>
 </section>
 <section id="length-of-stay" class="level3">
 <h3 class="anchored" data-anchor-id="length-of-stay">Length of Stay</h3>
@@ -249,44 +255,68 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="images/userguide_04.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
-<p>xx</p>
+<ol type="1">
+<li><p>The visualizations in the Explore - Length of Stay tab are for the year <code>2022</code>:</p>
+<p>a. The visualization of time series analysis for visitor arrivals by the visitor’s length of stay</p>
+<p>b. The visualization of horizon pot analysis for visitor arrivals by month and visitor’s length of stay</p>
+<p>c. The visualization of heatmap pot analysis for visitor arrivals by month and visitor’s length of stay</p>
+<p>d. The visualization of area chart anaysis for visitor arrivals by month and visitor’s length of stay</p></li>
+</ol>
 </section>
 </section>
 <section id="forecast" class="level2">
 <h2 class="anchored" data-anchor-id="forecast">Forecast</h2>
 <p>This tab can be used to analyze the forecasts that can be carried out on a regional level. This tab contains 8 forecasting models, their accuracy of forecasts, results of the forecast and refitted forecasts, as well as the residuals of these forecasts.</p>
 <p><img src="images/userguide_06.png" class="img-fluid"></p>
-<p>xx</p>
+<ol type="1">
+<li>In the filters section, start by selecting a region to have a quick look into using the multi-select drop-down filter for <code>Regions</code>. The default selection is <code>All</code> regions.</li>
+<li>Next, select the year range of the historical data to be explored using the <code>Year Range</code> slider. The default year range is from <code>2018</code> to <code>2022</code>.</li>
+<li>Choose the year range that is to be forecast using the <code>Forecast Range</code> slider. The default is set to forecast for the next <code>3</code> years.</li>
+<li>Next, choose the split ratio that will be used to split the data into a training and testing set using the <code>Train/Test Split Ratio</code> slider. The default ratio is set to <code>0.8</code>. In this case, the first 80% of the data will be used for training while the remaining 20% of data will be used for testing.</li>
+<li>Click on the <code>Forecast</code> button to apply the modifications that were made to the filters.</li>
+</ol>
 <div class="quarto-figure quarto-figure-left">
 <figure class="figure">
 <p><img src="images/userguide_10.png" class="img-fluid figure-img" width="200"></p>
 </figure>
 </div>
-<p>xx</p>
+<p>On top of filters, the forecast models’ parameters can be customizes for each of the available forecast models. The forecasting models are; ARIMA, Prophet, glmNet, Random Forest, SVM, XGBoost, ARIMA Boost and Prophet Boost.</p>
+<ol start="6" type="1">
+<li>In the model parameters section, first select the model to customize using the single-select drop-down filter for <code>Model</code>. The default model selected is the <code>ARIMA</code> model.</li>
+</ol>
+<!-- -->
+<ol start="7" type="1">
+<li>Based on the model that is selected, the parameters which are available for customization will be displayed.</li>
+<li>Once the parameters have been modified, click on the <code>Forecast</code> button to apply the changes.</li>
+</ol>
 <div class="quarto-figure quarto-figure-left">
 <figure class="figure">
 <p><img src="images/userguide_08.png" class="img-fluid figure-img" width="200"></p>
 </figure>
 </div>
-<p>xx</p>
+<ol start="9" type="1">
+<li>Upon selecting the <code>forecast</code> button, a popup will be shown with the message <code>Please Wait</code> to indicate that the models are being built.</li>
+</ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/userguide_07.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
-<p>xx</p>
+<ol start="10" type="1">
+<li><p>Once the pop-up is no longer shown, it means that the visualizations in the Forecast tab have been updated:</p>
+<p>a. Three tabs containing visualizations on the forecast model, refitted model and the residuals of the forecast can be viewed under the time series forecasting of visitor arrivals section</p>
+<p>b. A table capturing the performance accuracy of each model will be displayed under the accuracy table of forecasts section</p></li>
+</ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/userguide_05.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
-<p>xx</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/userguide_09.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
-<p>xx</p>
 
 
 </section>

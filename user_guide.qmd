@@ -22,7 +22,7 @@ This tab can be used to analyze the key insights for the Visitor Arrival Analysi
 
 ![](images/userguide_01.png){fig-align="center"}
 
-1.  Start by selecting the year range of the historical data to be explored using the `Year Range` filter. The default year range is from `1978` to `2022`.
+1.  Start by selecting the year range of the historical data to be explored using the `Year Range` slider. The default year range is from `1978` to `2022`.
 2.  Next, choose a region to have a quick look into using the multi-select drop-down filter for `Regions`. The default selection is `All` regions. Select `None` to un-select all options. It is also possible to individually mark the check-boxes of the regions that are to be analyzed.
 
 ![](images/userguide_01_1.png){fig-align="left" width="250"}
@@ -37,7 +37,7 @@ This tab can be used to analyze the key insights for the Visitor Arrival Analysi
 
     d\. The average length of days most visitors have stayed in Singapore in 2022
 
-    e\. The visualization for time series analysis to visualize visitor arrivals across time
+    e\. The visualization of time series analysis for visitor arrivals across time
 
 ## Explore
 
@@ -49,30 +49,38 @@ This tab can be used to analyze the country-level analysis of Visitor Arrivals i
 
 ![](images/userguide_02.png){fig-align="center"}
 
-1.  Start by selecting the year range of the historical data to be explored using the `Year Range` filter. The default year range is from `2012` to `2022`.
+1.  Start by selecting the year range of the historical data to be explored using the `Year Range` slider. The default year range is from `2012` to `2022`.
 2.  Next, choose a country to drill down into using the single-select drop-down filter for `Country`. The default selection is `Australia`. The filter is sorted in alphabetical order. If a country that you want to analyze is not included in the filter, it would mean that there is no record of a person from that country visiting Singapore.
 
 ![](images/userguide_02_1.png){fig-align="left" width="250"}
 
 3.  Upon modifications of the filters, the visualizations in the Explore - Tourism Markets tab will be automatically updated:
 
-    a\. The total number of visitors, represented in millions, that have arrived in Singapore
+    a\. The visualization of cycle plot analysis for visitor arrivals across month and year. The red line indicates the average number of visitors that arrived on a particular month.
 
-    b\. The total number of countries that have visited Singapore
-
-    c\. The age range of most visitors that have visited Singapore in 2022
-
-    d\. The average length of days most visitors have stayed in Singapore in 2022
-
-    e\. The visualization for time series analysis to visualize visitor arrivals across time
+    b\. The visualization of calendar heatmap analysis to compare the visitor arrivals by month and year. The darker colour indicates a higher number of visitor arrivals while the lighter colour indicates a lower number of visitor arrivals.
 
 ### Demographics
 
-This tab can be used to analyze the age and gender breakdown of the visitors that arrive in Singapore.
+This tab can be used to analyze the age and gender breakdown of the Visitor Arrivals in Singapore..
 
 ![](images/userguide_03.png){fig-align="center"}
 
-xx
+1.  The left panel depicts the analysis by `Gender` while the right panel depicts the analysis by `Age Group`
+
+2.  The visualizations in the Explore - Demographics tab are for the year `2022`:
+
+    a\. The visualization of time series analysis for visitor arrivals by gender
+
+    b\. The visualization of heatmap analysis for visitor arrivals by month and gender
+
+    c\. The visualization of horizon pot analysis for visitor arrivals by month and gender
+
+    d\. The visualization of time series analysis for visitor arrivals by age group
+
+    e\. The visualization of heatmap analysis for visitor arrivals by month and age group
+
+    f\. The visualization of horizon pot analysis for visitor arrivals by month and age group
 
 ### Length of Stay
 
@@ -80,7 +88,15 @@ This tab can be used to analyze the length of stay of the visitors that arrive i
 
 ![](images/userguide_04.png){fig-align="center"}
 
-xx
+1.  The visualizations in the Explore - Length of Stay tab are for the year `2022`:
+
+    a\. The visualization of time series analysis for visitor arrivals by the visitor's length of stay
+
+    b\. The visualization of horizon pot analysis for visitor arrivals by month and visitor's length of stay
+
+    c\. The visualization of heatmap pot analysis for visitor arrivals by month and visitor's length of stay
+
+    d\. The visualization of area chart anaysis for visitor arrivals by month and visitor's length of stay
 
 ## Forecast
 
@@ -88,24 +104,36 @@ This tab can be used to analyze the forecasts that can be carried out on a regio
 
 ![](images/userguide_06.png)
 
-xx
+1.  In the filters section, start by selecting a region to have a quick look into using the multi-select drop-down filter for `Regions`. The default selection is `All` regions.
+2.  Next, select the year range of the historical data to be explored using the `Year Range` slider. The default year range is from `2018` to `2022`.
+3.  Choose the year range that is to be forecast using the `Forecast Range` slider. The default is set to forecast for the next `3` years.
+4.  Next, choose the split ratio that will be used to split the data into a training and testing set using the `Train/Test Split Ratio` slider. The default ratio is set to `0.8`. In this case, the first 80% of the data will be used for training while the remaining 20% of data will be used for testing.
+5.  Click on the `Forecast` button to apply the modifications that were made to the filters.
 
 ![](images/userguide_10.png){fig-align="left" width="200"}
 
-xx
+On top of filters, the forecast models' parameters can be customizes for each of the available forecast models. The forecasting models are; ARIMA, Prophet, glmNet, Random Forest, SVM, XGBoost, ARIMA Boost and Prophet Boost.
+
+6.  In the model parameters section, first select the model to customize using the single-select drop-down filter for `Model`. The default model selected is the `ARIMA` model.
+
+```{=html}
+<!-- -->
+```
+7.  Based on the model that is selected, the parameters which are available for customization will be displayed.
+8.  Once the parameters have been modified, click on the `Forecast` button to apply the changes.
 
 ![](images/userguide_08.png){fig-align="left" width="200"}
 
-xx
+9.  Upon selecting the `forecast` button, a popup will be shown with the message `Please Wait` to indicate that the models are being built.
 
 ![](images/userguide_07.png){fig-align="center"}
 
-xx
+10. Once the pop-up is no longer shown, it means that the visualizations in the Forecast tab have been updated:
+
+    a\. Three tabs containing visualizations on the forecast model, refitted model and the residuals of the forecast can be viewed under the time series forecasting of visitor arrivals section
+
+    b\. A table capturing the performance accuracy of each model will be displayed under the accuracy table of forecasts section
 
 ![](images/userguide_05.png){fig-align="center"}
 
-xx
-
 ![](images/userguide_09.png){fig-align="center"}
-
-xx

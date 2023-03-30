@@ -14,7 +14,7 @@
 
 # Load necessary libraries for the R Shiny App
 pacman::p_load(shiny, shinydashboard, shinythemes, shinydashboardPlus, shinyWidgets, shinybusy,
-  readxl, lubridate, ggHoriPlot, viridis, timetk, modeltime, kernlab, reactable, tidymodels, plotly, tidyverse)
+  readxl, lubridate, ggHoriPlot, scales, viridis, timetk, modeltime, kernlab, reactable, tidymodels, plotly, tidyverse)
 
 # Load the dataset
 vaByMarketRaw <- read_excel("outputFile -International Visitor Arrivals.xlsx", sheet = "T1", skip = 10)
@@ -515,7 +515,7 @@ server <- function(input, output, session) {
     temp <- vaByMarket %>% mutate(Month = month(Period)) %>% filter(Country %in% input$country)
     temp <- temp[temp$Year >= input$sliderYear3[1] & temp$Year <= input$sliderYear3[2], ]
     temp[is.na(temp)] = 0
-    figHeatmapPlot <- ggplot(data = temp) + geom_tile(aes(x = Month, y = Year, fill = Visitors)) + labs(title = NULL) + theme_bw() + theme(legend.position = "none", axis.text = element_text(size = 7), axis.title = element_text(size = 8)) + scale_x_continuous(breaks = seq_along(month.name), labels = month.abb) + scale_y_continuous(labels = scaleFUN)
+    figHeatmapPlot <- ggplot(data = temp) + geom_tile(aes(x = Month, y = Year, fill = Visitors)) + labs(title = NULL) + theme_bw() + theme(legend.position = "none", axis.text = element_text(size = 7), axis.title = element_text(size = 8)) + scale_x_continuous(breaks = seq_along(month.name), labels = month.abb) + scale_y_continuous(labels = scaleFUN) + scale_fill_gradient(low = "powderblue", high = "steelblue")
     figHeatmapPlot
   })
   
@@ -544,7 +544,8 @@ server <- function(input, output, session) {
       theme_bw() +
       labs(x = "Month", y = NULL, title = NULL) +
       theme(axis.text = element_text(size = 7), axis.title = element_text(size = 8), legend.position = "none") +
-      scale_x_continuous(breaks = seq_along(month.name), labels = month.abb)
+      scale_x_continuous(breaks = seq_along(month.name), labels = month.abb) +
+      scale_fill_gradient(low = "powderblue", high = "steelblue")
   })
     
   output$genderHorizon <- renderPlot({
@@ -588,7 +589,8 @@ server <- function(input, output, session) {
       theme_bw() +
       labs(x = "Month", y = NULL, title = NULL) +
       theme(axis.text = element_text(size = 7), axis.title = element_text(size = 8), legend.position = "none") +
-      scale_x_continuous(breaks = seq_along(month.name), labels = month.abb)
+      scale_x_continuous(breaks = seq_along(month.name), labels = month.abb) +
+      scale_fill_gradient(low = "powderblue", high = "steelblue")
   })
   
   output$ageHorizon <- renderPlot({
@@ -660,7 +662,8 @@ server <- function(input, output, session) {
       labs(x = "Month", y = NULL, title = NULL) +
       theme_bw() +
       theme(axis.text = element_text(size = 7), axis.title = element_text(size = 8), legend.position = "none") +
-      scale_x_continuous(breaks = seq_along(month.name), labels = month.abb)
+      scale_x_continuous(breaks = seq_along(month.name), labels = month.abb) +
+      scale_fill_gradient(low = "powderblue", high = "steelblue")
   })
   
   output$losArea <- renderPlotly({
