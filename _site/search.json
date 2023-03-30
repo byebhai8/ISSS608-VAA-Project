@@ -32,14 +32,21 @@
     "href": "user_guide.html",
     "title": "User Guide",
     "section": "",
-    "text": "This tab can be used to analyze the key insights for the Visitor Arrival Analytics R Shiny application.\n\n\n\n\n\nxx\n\n\n\n\n\nxx"
+    "text": "This sidebar panel can be used to navigate within the Visitor Arrival Analysis’ R Shiny application.\n\n\n\n\n\nOn the left sidebar panel, the user can navigate to the following tabs:\n\nSummary tab which serves as the homepage\nExplore tab which contains three sub-tabs; Tourism Markets, Demographics and Length of Stay, each which contains the data exploration of their respective dataset\nForecast tab which contains the time series forecasting carried out on a regional level"
+  },
+  {
+    "objectID": "user_guide.html#summary",
+    "href": "user_guide.html#summary",
+    "title": "User Guide",
+    "section": "Summary",
+    "text": "Summary\nThis tab can be used to analyze the key insights for the Visitor Arrival Analysis’ R Shiny application.\n\n\n\n\n\n\nStart by selecting the year range of the historical data to be explored using the Year Range filter. The default year range is from 1978 to 2022.\nNext, choose a region to have a quick look into using the multi-select drop-down filter for Regions. The default selection is All regions. Select None to un-select all options. It is also possible to individually mark the check-boxes of the regions that are to be analyzed.\n\n\n\n\n\n\n\nUpon modifications of the filters, the visualizations in the Summary tab will be automatically updated:\na. The total number of visitors, represented in millions, that have arrived in Singapore\nb. The total number of countries that have visited Singapore\nc. The age range of most visitors that have visited Singapore in 2022\nd. The average length of days most visitors have stayed in Singapore in 2022\ne. The visualization for time series analysis to visualize visitor arrivals across time"
   },
   {
     "objectID": "user_guide.html#explore",
     "href": "user_guide.html#explore",
     "title": "User Guide",
     "section": "Explore",
-    "text": "Explore\nThere are three sub-sections for the explore section. These sections contain analysis on the Tourism Markets, the Demographics of Visitors as well the Length of Stay of these visitors.\n\nTourism Markets\nThis tab can be used to analyze the country-level analysis of Visitor Arrivals to Singapore.\n\n\n\n\n\nxx\n\n\n\n\n\nxx\n\n\nDemographics\nThis tab can be used to analyze the age and gender breakdown of the visitors that arrive in Singapore.\n\n\n\n\n\nxx\n\n\nLength of Stay\nThis tab can be used to analyze the length of stay of the visitors that arrive in Singapore.\n\n\n\n\n\nxx"
+    "text": "Explore\nThere are three sub-sections for the explore section. These sections contain analysis on the Tourism Markets, the Demographics of Visitors as well the Length of Stay of these visitors.\n\nTourism Markets\nThis tab can be used to analyze the country-level analysis of Visitor Arrivals in Singapore.\n\n\n\n\n\n\nStart by selecting the year range of the historical data to be explored using the Year Range filter. The default year range is from 2012 to 2022.\nNext, choose a country to drill down into using the single-select drop-down filter for Country. The default selection is Australia. The filter is sorted in alphabetical order. If a country that you want to analyze is not included in the filter, it would mean that there is no record of a person from that country visiting Singapore.\n\n\n\n\n\n\n\nUpon modifications of the filters, the visualizations in the Explore - Tourism Markets tab will be automatically updated:\na. The total number of visitors, represented in millions, that have arrived in Singapore\nb. The total number of countries that have visited Singapore\nc. The age range of most visitors that have visited Singapore in 2022\nd. The average length of days most visitors have stayed in Singapore in 2022\ne. The visualization for time series analysis to visualize visitor arrivals across time\n\n\n\nDemographics\nThis tab can be used to analyze the age and gender breakdown of the visitors that arrive in Singapore.\n\n\n\n\n\nxx\n\n\nLength of Stay\nThis tab can be used to analyze the length of stay of the visitors that arrive in Singapore.\n\n\n\n\n\nxx"
   },
   {
     "objectID": "user_guide.html#forecast",

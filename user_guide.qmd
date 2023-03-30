@@ -2,17 +2,42 @@
 title: "User Guide"
 ---
 
+## Navigation
+
+This sidebar panel can be used to navigate within the Visitor Arrival Analysis' R Shiny application.
+
+![](images/userguide_01_2.png){fig-align="left" width="250"}
+
+On the left sidebar panel, the user can navigate to the following tabs:
+
+-   Summary tab which serves as the homepage
+
+-   Explore tab which contains three sub-tabs; Tourism Markets, Demographics and Length of Stay, each which contains the data exploration of their respective dataset
+
+-   Forecast tab which contains the time series forecasting carried out on a regional level
+
 ## Summary
 
-This tab can be used to analyze the key insights for the Visitor Arrival Analytics R Shiny application.
+This tab can be used to analyze the key insights for the Visitor Arrival Analysis' R Shiny application.
 
 ![](images/userguide_01.png){fig-align="center"}
 
-xx
+1.  Start by selecting the year range of the historical data to be explored using the `Year Range` filter. The default year range is from `1978` to `2022`.
+2.  Next, choose a region to have a quick look into using the multi-select drop-down filter for `Regions`. The default selection is `All` regions. Select `None` to un-select all options. It is also possible to individually mark the check-boxes of the regions that are to be analyzed.
 
-![](images/userguide_01_1.png){fig-align="left" width="200"}
+![](images/userguide_01_1.png){fig-align="left" width="250"}
 
-xx
+3.  Upon modifications of the filters, the visualizations in the Summary tab will be automatically updated:
+
+    a\. The total number of visitors, represented in millions, that have arrived in Singapore
+
+    b\. The total number of countries that have visited Singapore
+
+    c\. The age range of most visitors that have visited Singapore in 2022
+
+    d\. The average length of days most visitors have stayed in Singapore in 2022
+
+    e\. The visualization for time series analysis to visualize visitor arrivals across time
 
 ## Explore
 
@@ -20,15 +45,26 @@ There are three sub-sections for the explore section. These sections contain ana
 
 ### Tourism Markets
 
-This tab can be used to analyze the country-level analysis of Visitor Arrivals to Singapore.
+This tab can be used to analyze the country-level analysis of Visitor Arrivals in Singapore.
 
 ![](images/userguide_02.png){fig-align="center"}
 
-xx
+1.  Start by selecting the year range of the historical data to be explored using the `Year Range` filter. The default year range is from `2012` to `2022`.
+2.  Next, choose a country to drill down into using the single-select drop-down filter for `Country`. The default selection is `Australia`. The filter is sorted in alphabetical order. If a country that you want to analyze is not included in the filter, it would mean that there is no record of a person from that country visiting Singapore.
 
-![](images/userguide_02_1.png){fig-align="left" width="200"}
+![](images/userguide_02_1.png){fig-align="left" width="250"}
 
-xx
+3.  Upon modifications of the filters, the visualizations in the Explore - Tourism Markets tab will be automatically updated:
+
+    a\. The total number of visitors, represented in millions, that have arrived in Singapore
+
+    b\. The total number of countries that have visited Singapore
+
+    c\. The age range of most visitors that have visited Singapore in 2022
+
+    d\. The average length of days most visitors have stayed in Singapore in 2022
+
+    e\. The visualization for time series analysis to visualize visitor arrivals across time
 
 ### Demographics
 
@@ -49,7 +85,6 @@ xx
 ## Forecast
 
 This tab can be used to analyze the forecasts that can be carried out on a regional level. This tab contains 8 forecasting models, their accuracy of forecasts, results of the forecast and refitted forecasts, as well as the residuals of these forecasts.
-
 
 ![](images/userguide_06.png)
 
