@@ -1,3 +1,2 @@
----
-title: "Poster"
----
+
+![](images/poster-draft.png){fig-align="center"}
