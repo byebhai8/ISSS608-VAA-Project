@@ -1,8 +1,10 @@
 ---
 title: "User Guide"
+author: "Bhairavi Vairavelu, Tao Meizhu (Victoria), Yin Hang"
+date: "02 April 2023"
 ---
 
-## Navigation
+### Navigation
 
 This sidebar panel can be used to navigate within the Visitor Arrival Analysis' R Shiny application.
 
@@ -16,7 +18,7 @@ On the left sidebar panel, the user can navigate to the following tabs:
 
 -   Forecast tab which contains the time series forecasting carried out on a regional level
 
-## Summary
+### Summary
 
 This tab can be used to analyze the key insights for the Visitor Arrival Analysis' R Shiny application.
 
@@ -39,11 +41,11 @@ This tab can be used to analyze the key insights for the Visitor Arrival Analysi
 
     e\. The visualization of time series analysis for visitor arrivals across time
 
-## Explore
+### Explore
 
 There are three sub-sections for the explore section. These sections contain analysis on the Tourism Markets, the Demographics of Visitors as well the Length of Stay of these visitors.
 
-### Tourism Markets
+#### Tourism Markets
 
 This tab can be used to analyze the country-level analysis of Visitor Arrivals in Singapore.
 
@@ -60,7 +62,7 @@ This tab can be used to analyze the country-level analysis of Visitor Arrivals i
 
     b\. The visualization of calendar heatmap analysis to compare the visitor arrivals by month and year. The darker colour indicates a higher number of visitor arrivals while the lighter colour indicates a lower number of visitor arrivals.
 
-### Demographics
+#### Demographics
 
 This tab can be used to analyze the age and gender breakdown of the Visitor Arrivals in Singapore..
 
@@ -82,7 +84,7 @@ This tab can be used to analyze the age and gender breakdown of the Visitor Arri
 
     f\. The visualization of horizon pot analysis for visitor arrivals by month and age group
 
-### Length of Stay
+#### Length of Stay
 
 This tab can be used to analyze the length of stay of the visitors that arrive in Singapore.
 
@@ -98,7 +100,7 @@ This tab can be used to analyze the length of stay of the visitors that arrive i
 
     d\. The visualization of area chart anaysis for visitor arrivals by month and visitor's length of stay
 
-## Forecast
+### Forecast
 
 This tab can be used to analyze the forecasts that can be carried out on a regional level. This tab contains 8 forecasting models, their accuracy of forecasts, results of the forecast and refitted forecasts, as well as the residuals of these forecasts.
 
@@ -116,9 +118,8 @@ On top of filters, the forecast models' parameters can be customizes for each of
 
 6.  In the model parameters section, first select the model to customize using the single-select drop-down filter for `Model`. The default model selected is the `ARIMA` model.
 
-```{=html}
 <!-- -->
-```
+
 7.  Based on the model that is selected, the parameters which are available for customization will be displayed.
 8.  Once the parameters have been modified, click on the `Forecast` button to apply the changes.
 

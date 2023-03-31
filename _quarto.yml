@@ -1,6 +1,6 @@
 project:
   type: website
-
+  
 website:
   page-navigation: false
   title: "Visitor Arrivals Analysis"
@@ -13,21 +13,31 @@ website:
     logo: "images/plane_logo_v2.png"
     pinned: true
     align: center
+    tools: 
+      - icon: "server"
+        href: https://www.singstat.gov.sg/find-data/search-by-theme/industry/tourism/latest-data
+        text: "Data Source"
+      - icon: "display"
+        href: https://byebhai8.shinyapps.io/ISSS608_VisitorArrivalAnalysis/
+        text: "R Shiny Application"
+      - icon: github
+        href: https://github.com/byebhai8/ISSS608-VAA-Project
+        text: "GitHub Repository"
     style: "docked"
     search: true
     collapse-level: 1
     contents: 
-      - text: "Home"
+      - text: "{{< bi house-fill >}} Home"
         href: index.qmd
-      - text: "Project Overview"
-        href: "project_proposal.html"
-      - text: "User Guide"
+      - text: "{{< bi text-paragraph >}} Project Overview"
+        href: "project_overview.html"
+      - text: "{{< bi file-earmark-richtext-fill >}} User Guide"
         href: "user_guide.html"
-      - text: "Application"
+      - text: "{{< bi window-sidebar >}} Application"
         href: "application.html"
-      - text: "Poster"
+      - text: "{{< bi easel >}} Poster"
         href: "poster.html"
-      - text: "About Us"
+      - text: "{{< bi people-fill >}} About Us"
         href: about.qmd
 
 format:

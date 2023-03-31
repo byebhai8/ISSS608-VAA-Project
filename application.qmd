@@ -1,14 +1,13 @@
 ---
 title: "Application"
-author: "Bhairavi"
-execute:
-  warning: false
+author: "Bhairavi Vairavelu, Tao Meizhu (Victoria), Yin Hang"
+date: "02 April 2023"
 ---
 
-The Visitor Arrivals Analysis application is available at here:
+![](images/application.png){fig-align="center"}
 
-<https://byebhai8.shinyapps.io/ISSS608_VisitorArrivalAnalysis/>
+The Visitor Arrivals Analysis application is available at <https://byebhai8.shinyapps.io/ISSS608_VisitorArrivalAnalysis/>
 
-Project GitHub Repository:
+Project GitHub Repository: <https://github.com/byebhai8/ISSS608-VAA-Project>
 
-<https://github.com/byebhai8/ISSS608-VAA-Project>
+Data Source: [https://www.singstat.gov.sg/](https://www.singstat.gov.sg/find-data/search-by-theme/industry/tourism/latest-data)
