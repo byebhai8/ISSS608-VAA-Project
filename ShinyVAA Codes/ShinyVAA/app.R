@@ -325,7 +325,7 @@ ui <- dashboardPage(
                     pickerInput(
                       "regions2", label = h5("Regions"),
                       choices = listRegions,
-                      selected = listRegions,
+                      selected = c("Africa"),
                       multiple = TRUE,
                       options = list(
                         'actions-box' = TRUE,

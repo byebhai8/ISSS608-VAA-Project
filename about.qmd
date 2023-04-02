@@ -2,7 +2,19 @@
 title: "About Us"
 ---
 
-**Team Members**
+![](images/tskam.jpg){fig-align="left"}
+
+Professor Kam Tin Seong is an Associate Professor of Information Systems (Practice) at the School of Computing and Information Systems at the Singapore Management University (SMU). He holds a PhD from University of London, a Master of Science from Universiti Sains Malaysia, and a Bachelor of Arts from the University of Malaya.
+
+Prof. Kam has been with SMU since 2006 and has held various academic administrative positions, including Senior Advisor, SIS Programmes in Analytics, and Coordinator, Business Analytics Track. He has taught several undergraduate and postgraduate courses at SMU, including Analytics Practicum, Geospatial Analytics and Applications, Visual Analytics for Business Intelligence, and Data Analytics Lab.
+
+Prof. Kam's research interests include business analytics, geospatial analytics, visual analytics, and database management. He has contributed to various research publications in these areas and has supervised several research projects at SMU.
+
+Overall, Prof. Kam has made significant contributions to the field of information systems and analytics through his teaching, research, and administrative roles at SMU. He is a passionate, kind and patient professor that has enabled the team to implement their ideas for this VAA project.
+
+**Team**
+
+There are three members that worked on this VAA project under the guidance of Prof. Kam.
 
 -   Bhairavi Vairavelu: [LinkedIn](https://www.linkedin.com/in/bhairavivairavelu/) \| [GitHub](https://github.com/byebhai8)
 

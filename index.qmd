@@ -1,9 +1,13 @@
 ---
-title: "Visual Analysis of Visitor Arrivals in Singapore"
+title: "Visitor Arrival Analysis"
 ---
-
-This is a Quarto website that will be used for ISSS608 Visual Analytics and Applications Project.
 
 **Project Summary**
 
-In this project, our team, Group 10, will be building a web-enabled visual analytics platform using R Shiny application. The aim of this project is to provide key insights using the data we have gathered and cleansed, allowing the user to draw meaningful conclusions from our visualizations.
+The COVID-19 pandemic has significantly affected the tourism industry in Singapore, resulting in a decline in tourist arrivals and changing travel patterns. As tourism plays a vital role in Singapore's economy, a tool that can forecast tourist numbers based on historical time-series data and multiple factors is critical. This project aims to develop a web-enabled visual analytics platform using an R Shiny application and a Quarto website to assist the tourism sector and stakeholders in making informed decisions.
+
+The project explores and develops a web-based R Shiny application for **Visitor Arrivals Analysis** in Singapore. It loads, cleanses, and preprocesses three datasets, creates interactive time series analysis plots, and explores three aspects of analysis - tourism markets, demographics of visitors, and length of stay. Using the `modeltime` package with `tidymodel` framework in R, the project builds a unified interface for time series modeling and forecasting.
+
+The R Shiny application contains three sections -- Summary, Explore, and Forecast, allowing users to draw insights from past year data. The Exploration section offers a detailed analysis of tourism markets, demographics of visitors, and length of stay using various visualization techniques. Users can customize forecast analysis by selecting various filters such as year range, region, and country, and fine-tune the model's parameters. The application also displays a table capturing the performance accuracy of each model under the accuracy table of forecasts section.
+
+This project helps decision-makers in the tourism industry make informed decisions about resource allocation, marketing strategies, and regional development planning. The site will be continuously updated and maintained to remain relevant and useful for the rapidly evolving global tourism landscape.

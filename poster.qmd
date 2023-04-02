@@ -1,2 +1,1 @@
-
-![](images/poster-draft.png){fig-align="center"}
+![](images/poster.png){fig-align="center"}
